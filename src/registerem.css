@@ -1,0 +1,80 @@
+/* Add some basic styles for the form */
+
+  .rbackground {
+    height: 200vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to bottom right, #1e3a8a, #2563eb);
+  }
+  
+  .glass-container {
+    width: 100%;
+    max-width: 400px;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    text-align: center;
+  }
+  
+  .logo {
+    width: 120px; /* Adjusted logo size */
+    margin-bottom: 20px;
+  }
+  
+  .title {
+    font-size: 22px; /* Slightly smaller title */
+    margin-bottom: 20px;
+  }
+  
+  .error-message {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  label {
+    text-align: left;
+    margin-bottom: 8px;
+    font-weight: bold;
+  }
+  
+  input,
+  textarea {
+    padding: 8px; /* Slightly reduced padding */
+    margin-bottom: 12px; /* Reduced margin */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  input[type="radio"] {
+    margin-right: 10px;
+  }
+  
+  .gender-options {
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 12px; /* Reduced bottom margin */
+  }
+  
+  button.login-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 12px; /* Slightly smaller padding */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  button.login-btn:hover {
+    background-color: #457ba0;
+  }
+  
