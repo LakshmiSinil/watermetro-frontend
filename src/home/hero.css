@@ -3,6 +3,11 @@
     overflow: hidden;
   }
   
+  .background-video{
+    width:100%;
+ 
+  }
+  
   .hero-image {
     width: 100%;
     height: auto;
