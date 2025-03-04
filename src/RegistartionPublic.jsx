@@ -1,16 +1,17 @@
-
-import React, { useState } from 'react';
-import './Registerp.css'; // Ensure this file exists
+import React, { useState } from "react";
+import "./Registerp.css"; // Ensure this file exists
+import api from "./config/axiosInstance";
 
 const Registrationp = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    email: '',
-    password: ''
+    name: "",
+    phone: "",
+    email: "",
+    password: "",
   });
+  console.log("🚀 ~ Registrationp ~ formData:", formData);
 
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   // Handle input change
   const handleChange = (e) => {
@@ -18,9 +19,9 @@ const Registrationp = () => {
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     // Trim inputs before validation
     const phone = formData.phone.trim();
     const email = formData.email.trim();
@@ -46,37 +47,69 @@ const Registrationp = () => {
       setError("Password must be at least 6 characters long!");
       return;
     }
-
+    const response = await api.post("/users/register", formData);
+    console.log("🚀 ~ handleSubmit ~ response:", response);
     setError("");
-    alert("Registration Successful!");
-    console.log("Registered User:", formData);
 
     // Reset form after successful registration
-    setFormData({ name: '', phone: '', email: '', password: '' });
+    // setFormData({ name: "", phone: "", email: "", password: "" });
   };
 
   return (
     <div className="pbackground">
       <div className="glass-container">
-        <img src="https://cdn-dev.watermetro.co.in/logo_c478d0c525.png" alt="Water Metro" className="logo" />
+        <img
+          src="https://cdn-dev.watermetro.co.in/logo_c478d0c525.png"
+          alt="Water Metro"
+          className="logo"
+        />
         <h2 className="title">Register</h2>
-        
-        {error && <p className="error-message">{error}</p>} {/* Show error if any */}
-        
+        {error && <p className="error-message">{error}</p>}{" "}
+        {/* Show error if any */}
         <form onSubmit={handleSubmit}>
           <label>Name</label>
-          <input type="text" name="name" placeholder="Your Name" value={formData.name} onChange={handleChange} required />
+          <input
+            type="text"
+            name="name"
+            placeholder="Your Name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
 
           <label>Phone Number</label>
-          <input type="tel" name="phone" placeholder="1234567890" value={formData.phone} onChange={handleChange} required />
+          <input
+            type="tel"
+            name="phone"
+            placeholder="1234567890"
+            value={formData.phone}
+            onChange={handleChange}
+            required
+          />
 
           <label>Email</label>
-          <input type="email" name="email" placeholder="username@gmail.com" value={formData.email} onChange={handleChange} required />
+          <input
+            type="email"
+            name="email"
+            placeholder="username@gmail.com"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
 
           <label>Password</label>
-          <input type="password" name="password" placeholder="Password" value={formData.password} onChange={handleChange} required />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handleChange}
+            required
+          />
 
-          <button type="submit" className="login-btn">Register</button>
+          <button type="submit" className="login-btn">
+            Register
+          </button>
         </form>
       </div>
     </div>
