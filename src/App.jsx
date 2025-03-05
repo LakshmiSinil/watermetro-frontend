@@ -6,12 +6,15 @@ import Login from "./components/Login";
 import Registrationp from "./components/Register";
 import { UserProvider } from "./context/useUser.hook.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   const queryClient = new QueryClient();
   return (
     <Router>
       <QueryClientProvider client={queryClient}>
+        
+      <Toaster/>
         <UserProvider>
           <Navbar />
           <Routes>
