@@ -1,0 +1,91 @@
+/* Register.css - Scoped only to .register-page to avoid conflicts */
+
+.register-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 140vh;
+  width: 220vh;
+  background: linear-gradient(135deg, #4188ce, #2e79ce);
+  font-family: "Arial", sans-serif;
+  margin: 0;
+}
+
+.register-page .glass-container {
+  background: rgba(82, 166, 245, 0.9);
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 8px 24px rgba(90, 150, 211, 0.884);
+  max-width: 400px;
+  width: 90%;
+  height: 60%;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(59, 76, 235, 0.849);
+}
+
+.register-page .logo {
+  display: block;
+  margin: 0 auto 20px;
+  height: 50px;
+}
+
+.register-page .title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 1px;
+  color: #ebf2f7;
+}
+
+.register-page form {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.register-page label {
+  font-size: 14px;
+  color: #faf9f9;
+  font-weight: bold;
+}
+
+.register-page input {
+  padding: 10px;
+  border: 1px solid #ffffff;
+  border-radius: 8px;
+  font-size: 14px;
+  outline: none;
+  background-color: rgba(255, 255, 255, 0.8);  /* Light background for inputs */
+  color: #000;  /* Text color */
+}
+
+.register-page input::placeholder {
+  color: #555;  /* Placeholder color */
+}
+
+.register-page input:focus {
+  border-color: #0077cc;
+  box-shadow: 0 0 6px rgba(171, 207, 231, 0.3);
+}
+
+.register-page .login-btn {
+  background-color: #40a9da;
+  color: rgb(224, 224, 224);
+  border: none;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.register-page .login-btn:hover {
+  background-color: #0c7fd1;
+}
+
+.register-page .error-message {
+  color: #d9534f;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 10px;
+}

@@ -13,7 +13,6 @@ const navLinks = [
 function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [registerDropdown, setRegisterDropdown] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,20 +22,6 @@ function Navbar() {
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (!event.target.closest(".register-container")) {
-        setRegisterDropdown(false);
-      }
-    };
-
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
     };
   }, []);
 
@@ -60,25 +45,7 @@ function Navbar() {
               </a>
             ))}
             <a href="/Login" className="nav-button">Login</a>
-
-            <div className="register-container">
-              <button
-                className="nav-button"
-                onClick={() => setRegisterDropdown((prev) => !prev)}
-              >
-                Register
-              </button>
-              {registerDropdown && (
-                <div className="register-dropdown">
-                  <a href="/register/employee" className="dropdown-item">
-                    Employee
-                  </a>
-                  <a href="/register/public" className="dropdown-item">
-                    Public
-                  </a>
-                </div>
-              )}
-            </div>
+            <a href="/Register" className="nav-button">Register</a>
           </div>
 
           {/* Mobile Navigation */}
@@ -106,22 +73,9 @@ function Navbar() {
                 <a href="/Login" className="nav-button" onClick={() => setMenuOpen(false)}>
                   Login
                 </a>
-
-                <div className="register-container">
-                  <button
-                    className="nav-button"
-                    onClick={() => setRegisterDropdown((prev) => !prev)}
-                  >
-                    Register
-                  </button>
-                  {registerDropdown && (
-                    <div className="register-dropdown">
-                      
-                    <a href="/registartion_public">Public</a>
-                    <a href="/registerem">Employee</a>
-                    </div>
-                  )}
-                </div>
+                <a href="/Register" className="nav-button" onClick={() => setMenuOpen(false)}>
+                  Register
+                </a>
               </div>
             )}
           </div>

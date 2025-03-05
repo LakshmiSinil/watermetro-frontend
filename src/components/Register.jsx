@@ -1,16 +1,15 @@
 import React, { useState } from "react";
-import "./Registerp.css"; // Ensure this file exists
-import api from "./config/axiosInstance";
+import "./Register.css"; // Ensure this file exists
+import api from "../config/axiosInstance";
 
-const Registrationp = () => {
+const Register = () => {
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
     email: "",
     password: "",
   });
-  console.log("🚀 ~ Registrationp ~ formData:", formData);
-
+  console.log("🚀 ~ Register ~ Register:", Register);
   const [error, setError] = useState("");
 
   // Handle input change
@@ -20,6 +19,8 @@ const Registrationp = () => {
 
   // Handle form submission
   const handleSubmit = async (e) => {
+    console.log("🚀 ~ handleSubmit ~ handleSubmit:", handleSubmit)
+    
     e.preventDefault();
 
     // Trim inputs before validation
@@ -47,16 +48,18 @@ const Registrationp = () => {
       setError("Password must be at least 6 characters long!");
       return;
     }
+
     const response = await api.post("/users/register", formData);
     console.log("🚀 ~ handleSubmit ~ response:", response);
     setError("");
-
-    // Reset form after successful registration
-    // setFormData({ name: "", phone: "", email: "", password: "" });
   };
 
+    // Reset form after successful registration (optional)
+    // setFormData({ name: "", phone: "", email: "", password: "" });
+  
+
   return (
-    <div className="pbackground">
+    <div className="register-page"> {/* <-- Added the unique wrapper */}
       <div className="glass-container">
         <img
           src="https://cdn-dev.watermetro.co.in/logo_c478d0c525.png"
@@ -64,8 +67,7 @@ const Registrationp = () => {
           className="logo"
         />
         <h2 className="title">Register</h2>
-        {error && <p className="error-message">{error}</p>}{" "}
-        {/* Show error if any */}
+        {error && <p className="error-message">{error}</p>}
         <form onSubmit={handleSubmit}>
           <label>Name</label>
           <input
@@ -116,4 +118,4 @@ const Registrationp = () => {
   );
 };
 
-export default Registrationp;
+export default Register;

@@ -1,7 +1,7 @@
 import React from 'react';
 import './aboutus.css';
-import Footer from './footer';
-import Navbar from './navbar';
+import Footer from './Footer';
+import Navbar from './Navbar';
 
 export default function AboutPage() {
   return (

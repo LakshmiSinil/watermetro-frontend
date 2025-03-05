@@ -1,6 +1,6 @@
 .about-section {
     padding: 5rem 0;
-    background-color: #ffffff; /* bg-gray-50 */
+    background-color: #ebe9e9; /* bg-gray-50 */
   }
   
   .container {
@@ -35,12 +35,13 @@
   .image-container {
     position: relative;
     height: 400px;
+    width:100px;
     border-radius: 0.5rem; /* rounded-lg */
     overflow: hidden;
   }
   
   .image {
-    width: 100%;
+    width: 200%;
     height: 100%;
     object-fit: cover;
   }

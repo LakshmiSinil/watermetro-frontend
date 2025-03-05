@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Navbar from "./navbar"; 
-import Home from "./Homepage";
-import AboutPage from "./aboutus";
-import Login from "./login";
-import Registrationp from "./RegistartionPublic";
-import Registrationem from "./Registerem";
+import Navbar from "./components/Navbar"; 
+import Home from "./components/Homepage";
+import AboutPage from "./components/aboutus";
+import Login from "./components/Login";
+import Registrationp from "./components/Register";
+
 
 function App() {
   return (
@@ -14,8 +14,8 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/aboutus" element={<AboutPage />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/register/public" element={<Registrationp />} />
-        <Route path="/register/employee" element={<Registrationem />} />
+        <Route path="/register" element={<Registrationp />} />
+
       </Routes>
     </Router>
   );

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./login.css";
-import api from "./config/axiosInstance";
+import api from "../config/axiosInstance";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -11,20 +11,16 @@ const Login = () => {
 
   const [error, setError] = useState("");
 
-  // Handle input change
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Trim inputs before validation
     const email = formData.email.trim();
     const password = formData.password.trim();
 
-    // Basic validation
     if (!formData.email || !password) {
       setError("All fields are required!");
       return;
@@ -39,17 +35,18 @@ const Login = () => {
       setError("Password must be at least 6 characters long!");
       return;
     }
+
     const response = await api.post("/users/login", formData);
-    localStorage.setItem("token",response.data.token)
+    localStorage.setItem("token", response.data.token);
     console.log("🚀 ~ handleSubmit ~ response:", response);
     setError("");
 
-    // Reset form after successful registration
-    // setFormData({ name: "", phone: "", email: "", password: "" });
+    // Optional: reset the form
+    // setFormData({ email: "", password: "" });
   };
 
   return (
-    <div className="pbackground">
+    <div className="login-page"> {/* Unique wrapper for scoping */}
       <div className="glass-container">
         <img
           src="https://cdn-dev.watermetro.co.in/logo_c478d0c525.png"
@@ -57,8 +54,7 @@ const Login = () => {
           className="logo"
         />
         <h2 className="title">Login</h2>
-        {error && <p className="error-message">{error}</p>}{" "}
-        {/* Show error if any */}
+        {error && <p className="error-message">{error}</p>}
         <form onSubmit={handleSubmit}>
           <label>Email</label>
           <input
@@ -81,11 +77,11 @@ const Login = () => {
           />
 
           <button type="submit" className="login-btn">
-            login
+            Login
           </button>
         </form>
         <p className="register-text">
-          Don't have an account yet? <a href="#">Register for free</a>
+          Don't have an account yet? <a href="/Register">Register for free</a>
         </p>
       </div>
     </div>
