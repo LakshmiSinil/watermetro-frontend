@@ -4,6 +4,7 @@ import api from "../config/axiosInstance";
 import { Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+
 const Login = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -23,7 +24,7 @@ const Login = () => {
     const email = formData.email.trim();
     const password = formData.password.trim();
 
-    if (!formData.email || !password) {
+    if (!email || !password) {
       setError("All fields are required!");
       return;
     }
@@ -38,25 +39,21 @@ const Login = () => {
       return;
     }
 
-    const response = await api.post("/users/login", formData);
-    localStorage.setItem("token", response.data.token);
-    console.log("🚀 ~ handleSubmit ~ response:", response);
-    setError("");
+    try {
+      const response = await api.post("/users/login", formData);
+      localStorage.setItem("token", response.data.token);
 
-    // toast.promise( {
-    //   loading: "Logging in...",
-    //   success: "Login successful!",
-    //   error: "Invalid email or password. Please check again.",
-    // });
-
-    // Optional: reset the form
-    // setFormData({ email: "", password: "" });
+      toast.success("Login successful!");
+      setError(""); // Clear any previous error
+      navigate("/"); // Redirect to home page
+    } catch (err) {
+      toast.error("Invalid email or password. Please try again.");
+      setError("");
+    }
   };
 
   return (
     <div className="login-page">
-      {" "}
-      {/* Unique wrapper for scoping */}
       <div className="glass-container">
         <img
           src="https://cdn-dev.watermetro.co.in/logo_c478d0c525.png"
@@ -89,7 +86,8 @@ const Login = () => {
             variant="outlined"
             fullWidth
           />
-          <Button type="submit" variant="contained">
+
+          <Button type="submit" variant="contained" fullWidth>
             Login
           </Button>
         </form>
@@ -97,9 +95,9 @@ const Login = () => {
         <p className="register-text">
           Don't have an account yet?
           <Button href="/register">Register for free</Button>
-          <Button href="/RoutePage">routes</Button>
+          <Button href="/RoutePage">Routes</Button>
           <Button href="/BoatPage">Boats</Button>
-          <Button href="/ServicePage">services</Button>
+          <Button href="/ServicePage">Services</Button>
         </p>
       </div>
     </div>
