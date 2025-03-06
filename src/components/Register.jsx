@@ -1,16 +1,23 @@
 import React, { useState } from "react";
-import "./Register.css"; // Ensure this file exists
+import "./Register.css";
 import api from "../config/axiosInstance";
 import { TextField, Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query";
+
 
 const Register = () => {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient()
+
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
     email: "",
     password: "",
   });
-  console.log("🚀 ~ Register ~ Register:", Register);
+
   const [error, setError] = useState("");
 
   // Handle input change
@@ -20,11 +27,8 @@ const Register = () => {
 
   // Handle form submission
   const handleSubmit = async (e) => {
-    console.log("🚀 ~ handleSubmit ~ handleSubmit:", handleSubmit);
-
     e.preventDefault();
 
-    // Trim inputs before validation
     const phone = formData.phone.trim();
     const email = formData.email.trim();
     const password = formData.password.trim();
@@ -50,18 +54,25 @@ const Register = () => {
       return;
     }
 
-    const response = await api.post("/users/register", formData);
-    console.log("🚀 ~ handleSubmit ~ response:", response);
-    setError("");
-  };
+    try {
+      const response = await api.post("/users/register", formData);
+      localStorage.setItem("token", response.data.token);
 
-  // Reset form after successful registration (optional)
-  // setFormData({ name: "", phone: "", email: "", password: "" });
+      console.log("🚀 ~ Registration Response:", response);
+      toast.success("Registration successful!");
+      await queryClient.invalidateQueries({queryKey:["user"]})
+
+      setError("");
+      navigate("/");
+    } catch (err) {
+      console.log("🚀 ~ handleSubmit ~ err:", err)
+      toast.error("Registration failed. Please try again.");
+      setError("");
+    }
+  };
 
   return (
     <div className="register-page">
-      {" "}
-      {/* <-- Added the unique wrapper */}
       <div className="glass-container">
         <img
           src="https://cdn-dev.watermetro.co.in/logo_c478d0c525.png"
@@ -72,9 +83,8 @@ const Register = () => {
         {error && <p className="error-message">{error}</p>}
         <form onSubmit={handleSubmit}>
           <label>Name</label>
-
           <TextField
-            type="name"
+            type="text"
             name="name"
             placeholder="Your Name"
             value={formData.name}
@@ -119,7 +129,8 @@ const Register = () => {
             variant="outlined"
             fullWidth
           />
-          <Button type="submit" variant="contained">
+
+          <Button type="submit" variant="contained" fullWidth>
             Register
           </Button>
         </form>

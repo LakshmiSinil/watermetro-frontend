@@ -1,22 +1,62 @@
 import React, { useState } from "react";
-import {Box, Button,Typography,Table,TableBody,TableCell,TableContainer,TableHead,TableRow,Paper,Dialog,DialogActions,DialogContent,DialogTitle,TextField,} from "@mui/material";
+import {
+  Box,
+  Button,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+} from "@mui/material";
+import { toast } from "react-hot-toast";
+import api from "../config/axiosInstance";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 function RoutePage() {
   const [open, setOpen] = useState(false);
   const [fromLocation, setFromLocation] = useState("");
   const [toLocation, setToLocation] = useState("");
   const [fare, setFare] = useState("");
+  const queryClient = useQueryClient();
+
+  const { data: routes } = useQuery({
+    queryKey: ["routes"],
+    queryFn: async () => {
+      const res = await api.get("/routes");
+      return res.data;
+    },
+  });
 
   const handleOpenDialog = () => setOpen(true);
   const handleCloseDialog = () => setOpen(false);
 
-  const handleUpdate = () => {
-    console.log("From:", fromLocation);
-    console.log("To:", toLocation);
-    console.log("Fare:", fare);
-    // You can add logic to save the template here.
+  const handleUpdate = async () => {
+    const respPromise = api.post("/routes", { fromLocation, toLocation, fare });
+    toast.promise(respPromise, {
+      loading: "Creating...",
+      success: "Created ✅",
+      error: "Failed to create, try again",
+    });
+    const resp = await respPromise;
+    console.log("🚀 ~ handleUpdate ~ resp:", resp);
+    await queryClient.invalidateQueries({ queryKey: ["routes"] });
     handleCloseDialog();
+    reset();
   };
+
+  function reset() {
+    setFare(0);
+    setFromLocation("");
+    setToLocation("");
+  }
 
   return (
     <Box sx={{ padding: "16px", position: "relative" }}>
@@ -37,24 +77,25 @@ function RoutePage() {
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell align="right">sl no</TableCell>
-              <TableCell align="right">from location</TableCell>
-              <TableCell align="right">to location</TableCell>
-              <TableCell align="right">fare&nbsp;(Rs)</TableCell>
+              <TableCell align="center">from location</TableCell>
+              <TableCell align="center">to location</TableCell>
+              <TableCell align="center">fare&nbsp;(Rs)</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {/* No data rows */}
-            <TableRow>
-              <TableCell colSpan={5} align="center">
-                No data available
-              </TableCell>
-            </TableRow>
+            {routes?.map((route) => {
+              return (
+                <TableRow>
+                  <TableCell align="center">{route.fromLocation}</TableCell>
+                  <TableCell align="center">{route.toLocation}</TableCell>
+                  <TableCell align="center">{route.fare}</TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </TableContainer>
 
-      {/* Dialog / Popup for Creating Template */}
       <Dialog open={open} onClose={handleCloseDialog}>
         <DialogTitle>Create Template</DialogTitle>
         <DialogContent>

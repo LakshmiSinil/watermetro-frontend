@@ -23,9 +23,9 @@ function App() {
             <Route path="/aboutus" element={<AboutPage />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/RoutePage" element={<RoutePage/>}/>
-            <Route path="/BoatPage" element={<BoatPage/>}/>
-            <Route path="/ServicePage" element={<ServicePage/>}/>
+            <Route path="/route" element={<RoutePage/>}/>
+            <Route path="/boat" element={<BoatPage/>}/>
+            <Route path="/service" element={<ServicePage/>}/>
           </Routes>
         </UserProvider>
       </QueryClientProvider>

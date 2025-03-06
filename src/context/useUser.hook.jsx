@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 import api from "../config/axiosInstance";
 const UserContext = createContext();
@@ -8,7 +8,7 @@ export const UserProvider = ({ children }) => {
     queryKey: ["user"],
     queryFn: async () => {
       const res = await api.get("/users/me");
-      return res?.data?.user
+      return res?.data?.user;
     },
   });
   return (

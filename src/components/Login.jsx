@@ -4,6 +4,7 @@ import api from "../config/axiosInstance";
 import { Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -11,8 +12,9 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const queryClient = useQueryClient()
 
-  const [error, setError] = useState("");
+    const [error, setError] = useState("");
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -44,6 +46,7 @@ const Login = () => {
       localStorage.setItem("token", response.data.token);
 
       toast.success("Login successful!");
+      await queryClient.invalidateQueries({queryKey:["user"]})
       setError(""); // Clear any previous error
       navigate("/"); // Redirect to home page
     } catch (err) {
@@ -51,6 +54,8 @@ const Login = () => {
       setError("");
     }
   };
+
+
 
   return (
     <div className="login-page">
