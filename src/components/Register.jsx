@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./Register.css"; // Ensure this file exists
 import api from "../config/axiosInstance";
+import { TextField, Button } from "@mui/material";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -19,8 +20,8 @@ const Register = () => {
 
   // Handle form submission
   const handleSubmit = async (e) => {
-    console.log("🚀 ~ handleSubmit ~ handleSubmit:", handleSubmit)
-    
+    console.log("🚀 ~ handleSubmit ~ handleSubmit:", handleSubmit);
+
     e.preventDefault();
 
     // Trim inputs before validation
@@ -54,12 +55,13 @@ const Register = () => {
     setError("");
   };
 
-    // Reset form after successful registration (optional)
-    // setFormData({ name: "", phone: "", email: "", password: "" });
-  
+  // Reset form after successful registration (optional)
+  // setFormData({ name: "", phone: "", email: "", password: "" });
 
   return (
-    <div className="register-page"> {/* <-- Added the unique wrapper */}
+    <div className="register-page">
+      {" "}
+      {/* <-- Added the unique wrapper */}
       <div className="glass-container">
         <img
           src="https://cdn-dev.watermetro.co.in/logo_c478d0c525.png"
@@ -70,48 +72,56 @@ const Register = () => {
         {error && <p className="error-message">{error}</p>}
         <form onSubmit={handleSubmit}>
           <label>Name</label>
-          <input
-            type="text"
+
+          <TextField
+            type="name"
             name="name"
             placeholder="Your Name"
             value={formData.name}
             onChange={handleChange}
             required
+            variant="outlined"
+            fullWidth
           />
 
           <label>Phone Number</label>
-          <input
+          <TextField
             type="tel"
             name="phone"
             placeholder="1234567890"
             value={formData.phone}
             onChange={handleChange}
             required
+            variant="outlined"
+            fullWidth
           />
 
           <label>Email</label>
-          <input
+          <TextField
             type="email"
             name="email"
             placeholder="username@gmail.com"
             value={formData.email}
             onChange={handleChange}
             required
+            variant="outlined"
+            fullWidth
           />
 
           <label>Password</label>
-          <input
+          <TextField
             type="password"
             name="password"
             placeholder="Password"
             value={formData.password}
             onChange={handleChange}
             required
+            variant="outlined"
+            fullWidth
           />
-
-          <button type="submit" className="login-btn">
+          <Button type="submit" variant="contained">
             Register
-          </button>
+          </Button>
         </form>
       </div>
     </div>
