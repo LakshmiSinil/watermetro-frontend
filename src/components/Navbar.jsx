@@ -1,89 +1,57 @@
-import React, { useState, useEffect } from "react";
-import { FaBars } from "react-icons/fa";
-import "./navbar.css";
+import React, { useState } from 'react';
+import './navbar.css'; // You can keep your existing styles if needed
 
 const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/aboutus", label: "About Us" },
-  { href: "/consultancy-services", label: "Consultancy Services" },
-  { href: "/terminals", label: "Terminals" },
-  { href: "/know-your-journey", label: "Know Your Journey" },
+    { href: "/", label: "Home" },
+    { href: "/aboutus", label: "About Us" },
+    { href: "/consultancy-services", label: "Consultancy Services" },
+    { href: "/terminals", label: "Terminals" },
+    { href: "/know-your-journey", label: "Know Your Journey" },
 ];
 
 function Navbar() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false); // Track login state
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 0);
+    const handleLogout = () => {
+        setIsAuthenticated(false);
+        alert('You have been logged out');
+        // Clear localStorage/session if you're using that
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+    return (
+        <nav className="navbar">
+            <div className="container">
+                <div className="navbar-content">
+                    <a href="/" className="navbar-logo">
+                        <img
+                            src="https://cdn-dev.watermetro.co.in/logo_c478d0c525.png"
+                            alt="Water Metro Logo"
+                            className="logo-image"
+                        />
+                    </a>
 
-  return (
-    <nav className={`navbar ${isScrolled ? "navbar-scrolled" : ""}`}>
-      <div className="container">
-        <div className="navbar-content">
-          <a href="/" className="navbar-logo">
-            <img
-              src="https://cdn-dev.watermetro.co.in/logo_c478d0c525.png"
-              alt="Water Metro Logo"
-              className="logo-image"
-            />
-          </a>
+                    <div className="navbar-links">
+                        {navLinks.map(link => (
+                            <a key={link.href} href={link.href} className="nav-link">
+                                {link.label}
+                            </a>
+                        ))}
 
-          {/* Desktop Navigation */}
-          <div className="navbar-links desktop-only">
-            {navLinks.map((link) => (
-              <a key={link.href} href={link.href} className="nav-link">
-                {link.label}
-              </a>
-            ))}
-            <a href="/Login" className="nav-button">Login</a>
-            <a href="/Register" className="nav-button">Register</a>
-          </div>
-
-          {/* Mobile Navigation */}
-          <div className="mobile-only">
-            <button
-              className="nav-toggle-button"
-              aria-label="Toggle menu"
-              onClick={() => setMenuOpen((prev) => !prev)}
-            >
-              <FaBars className={`menu-icon ${isScrolled ? "text-scrolled" : "text-default"}`} />
-            </button>
-
-            {menuOpen && (
-              <div className="nav-links-mobile">
-                {navLinks.map((link) => (
-                  <a
-                    key={link.href}
-                    href={link.href}
-                    className="nav-link"
-                    onClick={() => setMenuOpen(false)}
-                  >
-                    {link.label}
-                  </a>
-                ))}
-                {/* user endenki user nta perr kanikkanam, login button onnnum venda */}
-                <a href="/Login" className="nav-button" onClick={() => setMenuOpen(false)}>
-                  Login
-                </a>
-                <a href="/Register" className="nav-button" onClick={() => setMenuOpen(false)}>
-                  Register
-                </a>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-    </nav>
-  );
+                        {/* Ternary for auth links */}
+                        {isAuthenticated ? (
+                            <button className="nav-button" onClick={handleLogout}>Logout</button>
+                        ) : (
+                            <>
+                                <a href="/login" className="nav-button">Login</a>
+                                <a href="/register" className="nav-button">Register</a>
+                            </>
+                        )}
+                    </div>
+                </div>
+            </div>
+        </nav>
+    );
 }
 
 export default Navbar;
+

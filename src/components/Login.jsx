@@ -3,7 +3,7 @@ import "./login.css";
 import api from "../config/axiosInstance";
 import { Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-
+import toast from "react-hot-toast";
 const Login = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -42,6 +42,12 @@ const Login = () => {
     localStorage.setItem("token", response.data.token);
     console.log("🚀 ~ handleSubmit ~ response:", response);
     setError("");
+
+    // toast.promise( {
+    //   loading: "Logging in...",
+    //   success: "Login successful!",
+    //   error: "Invalid email or password. Please check again.",
+    // });
 
     // Optional: reset the form
     // setFormData({ email: "", password: "" });
@@ -86,14 +92,14 @@ const Login = () => {
           <Button type="submit" variant="contained">
             Login
           </Button>
-          {/* <button type="submit" className="login-btn">
-            
-          </button> */}
         </form>
-        
+
         <p className="register-text">
           Don't have an account yet?
           <Button href="/register">Register for free</Button>
+          <Button href="/RoutePage">routes</Button>
+          <Button href="/BoatPage">Boats</Button>
+          <Button href="/ServicePage">services</Button>
         </p>
       </div>
     </div>

@@ -1,12 +1,12 @@
 import React from 'react';
 import './aboutus.css';
 import Footer from './Footer';
-import Navbar from './Navbar';
+
 
 export default function AboutPage() {
   return (
     <>
-      <Navbar />
+     
       <main className="min-h-screen">
         {/* Hero Section */}
         <header className="about-header">
