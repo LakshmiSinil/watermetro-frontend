@@ -8,7 +8,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 import Register from "./components/Register";
 import RoutePage from "./components/RoutePage.jsx";
-
+import BoatPage from "./components/BoatPage.jsx";
+import ServicePage from"./components/ServicePage.jsx";
 function App() {
   const queryClient = new QueryClient();
   return (
@@ -23,6 +24,8 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/RoutePage" element={<RoutePage/>}/>
+            <Route path="/BoatPage" element={<BoatPage/>}/>
+            <Route path="/ServicePage" element={<ServicePage/>}/>
           </Routes>
         </UserProvider>
       </QueryClientProvider>
