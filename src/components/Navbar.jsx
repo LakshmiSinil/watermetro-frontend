@@ -70,6 +70,7 @@ function Navbar() {
                     {link.label}
                   </a>
                 ))}
+                {/* user endenki user nta perr kanikkanam, login button onnnum venda */}
                 <a href="/Login" className="nav-button" onClick={() => setMenuOpen(false)}>
                   Login
                 </a>

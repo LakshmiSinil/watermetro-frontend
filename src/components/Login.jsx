@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import "./login.css";
 import api from "../config/axiosInstance";
+import { Button, TextField } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
-  console.log("🚀 ~ Login ~ formData:", formData);
 
   const [error, setError] = useState("");
 
@@ -46,7 +48,9 @@ const Login = () => {
   };
 
   return (
-    <div className="login-page"> {/* Unique wrapper for scoping */}
+    <div className="login-page">
+      {" "}
+      {/* Unique wrapper for scoping */}
       <div className="glass-container">
         <img
           src="https://cdn-dev.watermetro.co.in/logo_c478d0c525.png"
@@ -57,31 +61,39 @@ const Login = () => {
         {error && <p className="error-message">{error}</p>}
         <form onSubmit={handleSubmit}>
           <label>Email</label>
-          <input
+          <TextField
             type="email"
             name="email"
             placeholder="username@gmail.com"
             value={formData.email}
             onChange={handleChange}
             required
+            variant="outlined"
+            fullWidth
           />
 
           <label>Password</label>
-          <input
+          <TextField
             type="password"
             name="password"
-            placeholder="Password"
+            placeholder="password"
             value={formData.password}
             onChange={handleChange}
             required
+            variant="outlined"
+            fullWidth
           />
-
-          <button type="submit" className="login-btn">
+          <Button type="submit" variant="contained">
             Login
-          </button>
+          </Button>
+          {/* <button type="submit" className="login-btn">
+            
+          </button> */}
         </form>
+        
         <p className="register-text">
-          Don't have an account yet? <a href="/Register">Register for free</a>
+          Don't have an account yet?
+          <Button href="/register">Register for free</Button>
         </p>
       </div>
     </div>

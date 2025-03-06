@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 
 function Home() {
   toast('hai  lakshmi')
+  
   const { user } = useUser();
   return (
     <div>
