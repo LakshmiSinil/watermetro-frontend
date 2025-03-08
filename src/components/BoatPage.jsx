@@ -21,7 +21,8 @@ import {
 import { toast } from "react-hot-toast";
 import api from "../config/axiosInstance";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
 function BoatPage() {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState("");
@@ -83,7 +84,7 @@ function BoatPage() {
     });
     
     const resp = await respPromise;
-    console.log("🚀 ~ handleUpdate ~ resp:", resp)
+    
     await queryClient.invalidateQueries({ queryKey: ["boats"] });
     handleCloseDialog();
     reset();
@@ -95,6 +96,18 @@ function BoatPage() {
     setUserId("");
     setStatus("");
   }
+  const handleDelete = async (id) => {
+    const respPromise = api.delete(`/boats/${id}`);
+    toast.promise(respPromise, {
+      loading: "Deleting...",
+      success: "Deleted ✅",
+      error: "Failed to delete, try again",
+    });
+    const resp = await respPromise;
+    await queryClient.invalidateQueries({ queryKey: ["boats"] });
+    handleCloseDialog();
+    reset();
+  };
 
   return (
     <Box sx={{ padding: "16px", position: "relative" }}>
@@ -119,6 +132,7 @@ function BoatPage() {
               <TableCell align="center">Route ID</TableCell>
               <TableCell align="center">User ID</TableCell>
               <TableCell align="center">Status</TableCell>
+              <TableCell align="center">Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -130,6 +144,11 @@ function BoatPage() {
                   <TableCell align="center">{route.fromLocation} - {route.toLocation}</TableCell>
                   <TableCell align="center">{boat.userId.name}</TableCell>
                   <TableCell align="center">{boat.status}</TableCell>
+                  <TableCell align="center">
+                    <IconButton aria-label="delete" size="large" onClick={() => handleDelete(boat._id)} >
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
                 </TableRow>
               );
             })}
