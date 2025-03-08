@@ -40,7 +40,7 @@ function Navbar() {
             {user ? (
               <>
                 {user?.name}
-                <button className="nav-button">Logout</button>
+                <button className="nav-button" onClick={()=>navigate("/login")}>Logout</button>
               </>
             ) : (
               <>

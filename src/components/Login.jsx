@@ -100,9 +100,9 @@ const Login = () => {
         <p className="register-text">
           Don't have an account yet?
           <Button href="/register">Register for free</Button>
-          <Button href="/RoutePage">Routes</Button>
-          <Button href="/BoatPage">Boats</Button>
-          <Button href="/ServicePage">Services</Button>
+          <Button href="/route">Routes</Button>
+          <Button href="/boat">Boats</Button>
+          <Button href="/service">Services</Button>
         </p>
       </div>
     </div>

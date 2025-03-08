@@ -97,7 +97,7 @@ function RoutePage() {
       </TableContainer>
 
       <Dialog open={open} onClose={handleCloseDialog}>
-        <DialogTitle>Create Template</DialogTitle>
+        <DialogTitle>Create Route</DialogTitle>
         <DialogContent>
           <TextField
             fullWidth
