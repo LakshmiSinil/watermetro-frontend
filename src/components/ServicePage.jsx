@@ -17,16 +17,18 @@ import {
   TextField,
   Select,
   MenuItem,
+  IconButton
 } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
-
 import { toast } from "react-hot-toast";
 import api from "../config/axiosInstance";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 function ServicePage() {
   const [open, setOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
+
   const [routeId, setRouteId] = useState("");
   const [boatId, setBoatId] = useState("");
   const [time, setTime] = useState("");
@@ -81,8 +83,18 @@ function ServicePage() {
     setRouteId("");
     setBoatId("");
   }
+
+  const handleOpenDeleteDialog = (id) => {
+    setSelectedId(id);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleCloseDeleteDialog = () => {
+    setSelectedId(null);
+    setDeleteDialogOpen(false);
+  };
   const handleDelete = async (id) => {
-    const respPromise = api.delete(`/services/${id}`);
+    const respPromise = api.delete(`/services/${selectedId}`);
     toast.promise(respPromise, {
       loading: "Deleting...",
       success: "Deleted ✅",
@@ -90,7 +102,7 @@ function ServicePage() {
     });
     const resp = await respPromise;
     await queryClient.invalidateQueries({ queryKey: ["services"] });
-    handleCloseDialog();
+    handleCloseDeleteDialog();
     reset();
   };
 
@@ -130,7 +142,7 @@ function ServicePage() {
                   <TableCell align="center">{service.boatId.name}</TableCell>
                   <TableCell align="center">{service.time}</TableCell>
                   <TableCell align="center">
-                    <IconButton aria-label="delete" size="large"onClick={() => handleDelete(service._id)}>
+                    <IconButton aria-label="delete" size="large"onClick={() => handleOpenDeleteDialog(service._id)}>
                       <DeleteIcon />
                     </IconButton>
                   </TableCell>
@@ -205,6 +217,26 @@ function ServicePage() {
           <Button onClick={handleCloseDialog}>Cancel</Button>
           <Button onClick={handleUpdate} variant="contained">
             Create
+          </Button>
+        </DialogActions>
+      </Dialog>
+      
+     
+      <Dialog
+        open={deleteDialogOpen}
+        onClose={handleCloseDeleteDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Are you sure you want to delete this service?"}
+        </DialogTitle>
+        <DialogActions>
+          <Button onClick={handleCloseDeleteDialog} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleDelete} color="error" autoFocus>
+            Delete
           </Button>
         </DialogActions>
       </Dialog>

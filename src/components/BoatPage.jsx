@@ -25,6 +25,9 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 function BoatPage() {
   const [open, setOpen] = useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [selectedId, setSelectedId] = useState(null);
+
   const [name, setName] = useState("");
   const [routeId, setRouteId] = useState("");
  
@@ -96,8 +99,17 @@ function BoatPage() {
     setUserId("");
     setStatus("");
   }
-  const handleDelete = async (id) => {
-    const respPromise = api.delete(`/boats/${id}`);
+  const handleOpenDeleteDialog = (id) => {
+    setSelectedId(id);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleCloseDeleteDialog = () => {
+    setSelectedId(null);
+    setDeleteDialogOpen(false);
+  };
+  const handleDelete = async () => {
+    const respPromise = api.delete(`/boats/${selectedId}`);
     toast.promise(respPromise, {
       loading: "Deleting...",
       success: "Deleted ✅",
@@ -105,9 +117,11 @@ function BoatPage() {
     });
     const resp = await respPromise;
     await queryClient.invalidateQueries({ queryKey: ["boats"] });
-    handleCloseDialog();
+    handleCloseDeleteDialog();
     reset();
   };
+
+
 
   return (
     <Box sx={{ padding: "16px", position: "relative" }}>
@@ -145,7 +159,7 @@ function BoatPage() {
                   <TableCell align="center">{boat.userId.name}</TableCell>
                   <TableCell align="center">{boat.status}</TableCell>
                   <TableCell align="center">
-                    <IconButton aria-label="delete" size="large" onClick={() => handleDelete(boat._id)} >
+                    <IconButton aria-label="delete" size="large" onClick={() => handleOpenDeleteDialog(boat._id)} >
                       <DeleteIcon />
                     </IconButton>
                   </TableCell>
@@ -235,6 +249,24 @@ function BoatPage() {
           <Button onClick={handleCloseDialog}>Cancel</Button>
           <Button onClick={handleUpdate} variant="contained">
             Create
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Dialog
+        open={deleteDialogOpen}
+        onClose={handleCloseDeleteDialog}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Are you sure you want to delete this route?"}
+        </DialogTitle>
+        <DialogActions>
+          <Button onClick={handleCloseDeleteDialog} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleDelete} color="error" autoFocus>
+            Delete
           </Button>
         </DialogActions>
       </Dialog>
