@@ -19,7 +19,8 @@ import {
 import { toast } from "react-hot-toast";
 import api from "../config/axiosInstance";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
 function RoutePage() {
   const [open, setOpen] = useState(false);
   const [fromLocation, setFromLocation] = useState("");
@@ -34,6 +35,8 @@ function RoutePage() {
       return res.data;
     },
   });
+      
+  
 
   const handleOpenDialog = () => setOpen(true);
   const handleCloseDialog = () => setOpen(false);
@@ -43,10 +46,9 @@ function RoutePage() {
     toast.promise(respPromise, {
       loading: "Creating...",
       success: "Created ✅",
-      error: "Failed to create, try again",
+      error: "Failed to create, try again"
     });
     const resp = await respPromise;
-    console.log("🚀 ~ handleUpdate ~ resp:", resp);
     await queryClient.invalidateQueries({ queryKey: ["routes"] });
     handleCloseDialog();
     reset();
@@ -57,7 +59,19 @@ function RoutePage() {
     setFromLocation("");
     setToLocation("");
   }
-
+  const handleDelete = async (id) => {
+    const respPromise = api.delete(`/routes/${id}`);
+    toast.promise(respPromise, {
+      loading: "Deleting...",
+      success: "Deleted ✅",
+      error: "Failed to delete, try again",
+    });
+    const resp = await respPromise;
+    await queryClient.invalidateQueries({ queryKey: ["routes"] });
+    handleCloseDialog();
+    reset();
+  };
+  
   return (
     <Box sx={{ padding: "16px", position: "relative" }}>
       <Typography variant="h5" sx={{ marginBottom: 2 }}>
@@ -80,6 +94,8 @@ function RoutePage() {
               <TableCell align="center">from location</TableCell>
               <TableCell align="center">to location</TableCell>
               <TableCell align="center">fare&nbsp;(Rs)</TableCell>
+              <TableCell align="center">Actions</TableCell>
+              
             </TableRow>
           </TableHead>
           <TableBody>
@@ -89,6 +105,11 @@ function RoutePage() {
                   <TableCell align="center">{route.fromLocation}</TableCell>
                   <TableCell align="center">{route.toLocation}</TableCell>
                   <TableCell align="center">{route.fare}</TableCell>
+                  <TableCell align="center">
+                    <IconButton aria-label="delete" size="large" onClick={() => handleDelete(route._id)}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
                 </TableRow>
               );
             })}
