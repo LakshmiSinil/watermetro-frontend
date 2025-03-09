@@ -21,6 +21,8 @@ import { toast } from "react-hot-toast";
 import api from "../config/axiosInstance";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from '@mui/icons-material/Edit';
+import Edit from "@mui/icons-material/Edit";
 
 function RoutePage() {
   const [open, setOpen] = useState(false);
@@ -106,7 +108,7 @@ function RoutePage() {
               <TableCell align="center">From Location</TableCell>
               <TableCell align="center">To Location</TableCell>
               <TableCell align="center">Fare&nbsp;(Rs)</TableCell>
-              <TableCell align="center">Actions</TableCell>
+              <TableCell align="center" colspan="2">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -122,6 +124,13 @@ function RoutePage() {
                     onClick={() => handleOpenDeleteDialog(route._id)}
                   >
                     <DeleteIcon />
+                  </IconButton>
+                  <IconButton
+                    aria-label="update"
+                    size="large"
+                    // onClick={() => handleOpenUpdateDialog(route._id)}
+                  >
+                    <EditIcon />
                   </IconButton>
                 </TableCell>
               </TableRow>

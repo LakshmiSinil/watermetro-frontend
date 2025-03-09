@@ -10,6 +10,7 @@ export const UserProvider = ({ children }) => {
       const res = await api.get("/users/me");
       return res?.data?.user;
     },
+    retry:false
   });
   return (
     <UserContext.Provider value={{ user }}>{children}</UserContext.Provider>

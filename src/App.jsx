@@ -10,6 +10,8 @@ import Register from "./components/Register";
 import RoutePage from "./components/RoutePage.jsx";
 import BoatPage from "./components/BoatPage.jsx";
 import ServicePage from"./components/ServicePage.jsx";
+import { Box } from "@mui/material";
+
 function App() {
   const queryClient = new QueryClient();
   return (
@@ -18,6 +20,7 @@ function App() {
         <Toaster />
         <UserProvider>
           <Navbar />
+          <Box sx={{height:"50px",width:"100vw"}}/>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/aboutus" element={<AboutPage />} />

@@ -23,6 +23,7 @@ import api from "../config/axiosInstance";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 function BoatPage() {
   const [open, setOpen] = useState(false);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -143,8 +144,8 @@ function BoatPage() {
           <TableHead>
             <TableRow>
               <TableCell align="center">Name</TableCell>
-              <TableCell align="center">Route ID</TableCell>
-              <TableCell align="center">User ID</TableCell>
+              <TableCell align="center">Route </TableCell>
+              <TableCell align="center">Employee</TableCell>
               <TableCell align="center">Status</TableCell>
               <TableCell align="center">Action</TableCell>
             </TableRow>
@@ -161,11 +162,14 @@ function BoatPage() {
                   <TableCell align="center">
                     <IconButton aria-label="delete" size="large" onClick={() => handleOpenDeleteDialog(boat._id)} >
                       <DeleteIcon />
+                  
+                      <EditIcon/>
                     </IconButton>
                   </TableCell>
                 </TableRow>
-              );
-            })}
+              
+              )}
+            )}
           </TableBody>
         </Table>
       </TableContainer>
