@@ -11,6 +11,7 @@ import RoutePage from "./components/RoutePage.jsx";
 import BoatPage from "./components/BoatPage.jsx";
 import ServicePage from"./components/ServicePage.jsx";
 import { Box } from "@mui/material";
+import AdminDashboard from "./components/admindashboard.jsx";
 
 function App() {
   const queryClient = new QueryClient();
@@ -29,6 +30,7 @@ function App() {
             <Route path="/route" element={<RoutePage/>}/>
             <Route path="/boat" element={<BoatPage/>}/>
             <Route path="/service" element={<ServicePage/>}/>
+            <Route path="/admin" element={<AdminDashboard/>}/>
           </Routes>
         </UserProvider>
       </QueryClientProvider>

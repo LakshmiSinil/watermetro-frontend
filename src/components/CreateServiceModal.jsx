@@ -52,7 +52,7 @@ export const CreateServiceModal = ({ isOpen, onClose }) => {
       error: "Failed to create, try again",
     });
     const resp = await respPromise;
-    await queryClient.invalidateQueries({ queryKey: ["services"] });
+    await queryClient.invalidateQueries({ queryKey: ["service"] });
     onClose();
     reset();
   };

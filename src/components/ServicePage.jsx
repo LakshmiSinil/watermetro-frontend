@@ -32,7 +32,7 @@ function ServicePage() {
   const queryClient = useQueryClient();
 
   const { data: services } = useQuery({
-    queryKey: ["services"],
+    queryKey: ["service"],
     queryFn: async () => {
       const res = await api.get("/services");
       return res.data.services;
@@ -60,13 +60,20 @@ function ServicePage() {
       error: "Failed to delete, try again",
     });
     const resp = await respPromise;
-    await queryClient.invalidateQueries({ queryKey: ["services"] });
+    await queryClient.invalidateQueries({ queryKey: ["service"] });
     handleCloseDeleteDialog();
   };
 
   return (
-    <Box sx={{ paddingInline: "160px", }}>
-      <Box sx={{width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+    <Box sx={{ paddingInline: "160px" }}>
+      <Box
+        sx={{
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
         <Typography variant="h5" sx={{ marginBottom: 2 }}>
           Water Metro - Service Management
         </Typography>
@@ -92,19 +99,20 @@ function ServicePage() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {services?.map((service) => {
+            {services?.map((services) => {
               return (
-                <TableRow key={service._id}>
+                <TableRow key={services._id}>
                   <TableCell align="center">
-                    {service.routeId.fromLocation}-{service.routeId.toLocation}
+                    {services.routeId.fromLocation}-
+                    {services.routeId.toLocation}
                   </TableCell>
-                  <TableCell align="center">{service.boatId.name}</TableCell>
-                  <TableCell align="center">{service.time}</TableCell>
+                  <TableCell align="center">{services.boatId.name}</TableCell>
+                  <TableCell align="center">{services.time}</TableCell>
                   <TableCell align="center">
                     <IconButton
                       aria-label="delete"
                       size="large"
-                      onClick={() => handleOpenDeleteDialog(service._id)}
+                      onClick={() => handleOpenDeleteDialog(services._id)}
                     >
                       <DeleteIcon />
                     </IconButton>
@@ -112,7 +120,7 @@ function ServicePage() {
                     <IconButton
                       aria-label="update"
                       size="large"
-                      onClick={() => setEditData(service)}
+                      onClick={() => setEditData(services)}
                     >
                       <EditIcon />
                     </IconButton>

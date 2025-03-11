@@ -1,61 +1,94 @@
 import React, { useState } from "react";
-import "./navbar.css"; // You can keep your existing styles if needed
+import "./navbar.css";
 import { useUser } from "../context/useUser.hook.jsx";
-import { Button } from "@mui/material";
+import { Button, IconButton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import DirectionsBoatFilledIcon from "@mui/icons-material/DirectionsBoatFilled";
+import CreateBookingModal from "./CreateBookingModel";
+import { useQueryClient } from "@tanstack/react-query";
 
 const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/aboutus", label: "About Us" },
-  { href: "/consultancy-services", label: "Consultancy Services" },
-  { href: "/terminals", label: "Terminals" },
-  { href: "/know-your-journey", label: "Know Your Journey" },
+  { path: "/", label: "Home" },
+  { path: "/aboutus", label: "About Us" },
+  // { path: "/consultancy-services", label: "Consultancy Services" },
+  // { path: "/terminals", label: "Terminals" },
+  { path: "/know-your-journey", label: "Know Your Journey" },
 ];
 
 function Navbar() {
   const { user } = useUser();
-  console.log("🚀 ~ Navbar ~ user:", user);
   const navigate = useNavigate();
+  const queryClient=useQueryClient()
+  const [isCreateBookingModalOpen, setIsCreateBookingModalOpen] =
+    useState(false);
+
+  const handleOpenDialog = () => setIsCreateBookingModalOpen(true);
+  const handleCloseDialog = () => setIsCreateBookingModalOpen(false);
 
   return (
     <nav className="navbar">
       <div className="container">
         <div className="navbar-content">
-          {/* TODO: make button use navigate remove href */}
-          <a href="/" className="navbar-logo">
+          <div className="navbar-logo" onClick={() => navigate("/")}>
             <img
               src="https://cdn-dev.watermetro.co.in/logo_c478d0c525.png"
               alt="Water Metro Logo"
               className="logo-image"
             />
-          </a>
+          </div>
 
           <div className="navbar-links">
             {navLinks.map((link) => (
-              <a key={link.href} href={link.href} className="nav-link">
+              <Button
+                key={link.path}
+                onClick={() => navigate(link.path)}
+                className="nav-link"
+              >
                 {link.label}
-              </a>
+              </Button>
             ))}
 
             {user ? (
               <>
-                {user?.name}
-                <button className="nav-button" onClick={()=>navigate("/login")}>Logout</button>
+               Hi {user?.name}
+                <IconButton
+                  aria-label="booking"
+                  size="large"
+                  onClick={handleOpenDialog}
+                >
+                  <DirectionsBoatFilledIcon />
+                </IconButton>
+                <Button
+                  variant="contained"
+                  onClick={async() => {
+                  localStorage.clear()
+                  await queryClient.invalidateQueries({queryKey:["user"]})
+                    navigate("/login");
+                  }}
+                >
+                  Logout
+                </Button>
               </>
             ) : (
               <>
                 <Button variant="outlined" onClick={() => navigate("/login")}>
                   Login
                 </Button>
-                {/* TODO: change all href to navigate , use material UI buttons */}
-                <a href="/register" className="nav-button">
+                <Button
+                  variant="outlined"
+                  onClick={() => navigate("/register")}
+                >
                   Register
-                </a>
+                </Button>
               </>
             )}
           </div>
         </div>
       </div>
+      <CreateBookingModal
+        isOpen={isCreateBookingModalOpen}
+        onClose={handleCloseDialog}
+      />
     </nav>
   );
 }

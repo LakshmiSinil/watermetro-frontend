@@ -50,7 +50,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
       error: "Failed to update, try again",
     });
     const resp = await respPromise;
-    await queryClient.invalidateQueries({ queryKey: ["services"] });
+    await queryClient.invalidateQueries({ queryKey: ["service"] });
     onClose();
     reset();
   };
