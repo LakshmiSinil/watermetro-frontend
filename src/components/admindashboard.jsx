@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import {
   Box,
   Button,
@@ -21,7 +21,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { toast } from "react-hot-toast";
 import api from "../config/axiosInstance";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { EditEmployeeModel } from "./Editemployeemodel";
+import {EditEmployeeModel} from "./EditEmployeeModel"
 import CreateEmployeeModal from "./CreateEmployeeModel";
 
 function AdminPage() {
@@ -40,7 +40,10 @@ function AdminPage() {
     },
   });
 
+// TODO: this should be done in backend
   const employees = users?.filter((user) => user.role === "employee");
+  const handleOpenDialog = () => setIsCreateModalOpen(true);
+  const handleCloseDialog = () => setIsCreateModalOpen(false);
 
   const handleOpenDeleteDialog = (id) => {
     setDeleteId(id);
@@ -75,6 +78,7 @@ function AdminPage() {
 
       const headers = rows[0].split(",");
       const emailIndex = headers.indexOf("Email");
+      const nameIndex = headers.indexOf("Name");
 
       if (emailIndex === -1) {
         toast.error("Invalid CSV file. No 'Email' column found.");
@@ -83,7 +87,7 @@ function AdminPage() {
 
       const bulkData = rows.slice(1).map((row) => {
         const columns = row.split(",");
-        return { email: columns[emailIndex].trim() };
+        return { email: columns[emailIndex].trim(),name:columns[nameIndex].trim() };
       });
 
       const respPromise = api.post("/users/bulk", { bulkData });
@@ -130,7 +134,7 @@ function AdminPage() {
           <Button
             variant="contained"
             size="small"
-            onClick={() => setIsCreateModalOpen(true)}
+            onClick={() => {handleOpenDialog()}}
           >
             + Create Employee
           </Button>
@@ -148,23 +152,23 @@ function AdminPage() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {employees?.map((employee) => (
-              <TableRow key={employee._id}>
-                <TableCell align="center">{employee.name}</TableCell>
-                <TableCell align="center">{employee.email}</TableCell>
-                <TableCell align="center">{employee.role}</TableCell>
+            {employees?.map((user) => (
+              <TableRow key={user._id}>
+                <TableCell align="center">{user.name}</TableCell>
+                <TableCell align="center">{user.email}</TableCell>
+                <TableCell align="center">{user.role}</TableCell>
                 <TableCell align="center">
                   <IconButton
                     aria-label="delete"
                     size="large"
-                    onClick={() => handleOpenDeleteDialog(employee._id)}
+                    onClick={() => handleOpenDeleteDialog(user._id)}
                   >
                     <DeleteIcon />
                   </IconButton>
                   <IconButton
                     aria-label="edit"
                     size="large"
-                    onClick={() => setEditData(employee)}
+                    onClick={() => setEditData(user)}
                   >
                     <EditIcon />
                   </IconButton>
@@ -184,7 +188,7 @@ function AdminPage() {
 
       <CreateEmployeeModal
         isOpen={isCreateModalOpen}
-        onClose={() => setIsCreateModalOpen(false)}
+        onClose={handleCloseDialog}
       />
 
       <Dialog

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+/* eslint-disable react/prop-types */
+import { useState, useEffect } from "react";
 import {
   Button,
   Dialog,
@@ -15,38 +16,57 @@ import { useQueryClient } from "@tanstack/react-query";
 
 export const EditEmployeeModel = ({ onClose, editData }) => {
   const queryClient = useQueryClient();
-  const [name, setName] = useState(editData?.name || "");
-  const [email, setEmail] = useState(editData?.email || "");
-  const [role, setRole] = useState(editData?.role || "employee");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [role, setRole] = useState("employee");
 
+  // Sync state when editData changes
   useEffect(() => {
-    setName(editData?.name || "");
-    setEmail(editData?.email || "");
-    setRole(editData?.role || "employee");
+    if (editData) {
+      setName(editData.name || "");
+      setEmail(editData.email || "");
+      setRole(editData.role || "employee");
+    } else {
+      reset();
+    }
   }, [editData]);
 
+  function reset() {
+    setName("");
+    setEmail("");
+    setRole("employee");
+  }
+
   const handleUpdate = async () => {
-    const respPromise = api.patch(`/users/${editData._id}`, {
-      name,
-      email,
-      role,
-    });
+    if (!editData?._id) return;
 
-    toast.promise(respPromise, {
-      loading: "Updating...",
-      success: "Employee updated successfully ✅",
-      error: "Failed to update, try again",
-    });
+    try {
+      await api.patch(`/users/${editData._id}`, {
+        name,
+        email,
+        role,
+      });
 
-    await respPromise;
-    await queryClient.invalidateQueries({ queryKey: ["users"] });
-    onClose();
+      toast.success("Employee updated successfully ✅");
+      await queryClient.invalidateQueries({ queryKey: ["users"] });
+      reset();
+      onClose();
+    } catch (error) {
+      toast.error("Failed to update, try again");
+      console.error("Update error:", error);
+    }
   };
 
   if (!editData) return null;
 
   return (
-    <Dialog open={!!editData} onClose={onClose}>
+    <Dialog
+      open={!!editData}
+      onClose={() => {
+        reset();
+        onClose();
+      }}
+    >
       <DialogTitle>Update Employee</DialogTitle>
       <DialogContent>
         <TextField
@@ -78,7 +98,15 @@ export const EditEmployeeModel = ({ onClose, editData }) => {
       </DialogContent>
 
       <DialogActions>
-        <Button onClick={onClose} color="primary">Cancel</Button>
+        <Button
+          onClick={() => {
+            reset();
+            onClose();
+          }}
+          color="primary"
+        >
+          Cancel
+        </Button>
         <Button onClick={handleUpdate} variant="contained" color="success">
           Update
         </Button>
@@ -86,3 +114,5 @@ export const EditEmployeeModel = ({ onClose, editData }) => {
     </Dialog>
   );
 };
+
+export default EditEmployeeModel;
