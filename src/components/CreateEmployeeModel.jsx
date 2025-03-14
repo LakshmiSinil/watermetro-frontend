@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Button,
   Dialog,
@@ -26,20 +26,27 @@ export const CreateEmployeeModal = ({ isOpen, onClose }) => {
   };
 
   const handleCreate = async () => {
-    const data = { name, email, role };
+    if (!name || !email) {
+      toast.error("Name and Email are required");
+      return;
+    }
 
-    const respPromise = api.post("/users", data);
+    try {
+      const respPromise = api.post("/users", { name, email });
 
-    toast.promise(respPromise, {
-      loading: "Creating...",
-      success: "Employee created successfully ✅",
-      error: "Failed to create employee, try again",
-    });
+      toast.promise(respPromise, {
+        loading: "Creating...",
+        success: "Employee created ✅",
+        error: "Failed to create employee, try again",
+      });
 
-    await respPromise;
-    await queryClient.invalidateQueries({ queryKey: ["users"] });
-    onClose();
-    reset();
+      await respPromise;
+      await queryClient.invalidateQueries({ queryKey: ["users"] });
+      reset();
+      onClose();
+    } catch (error) {
+      console.error("Error creating employee:", error);
+    }
   };
 
   if (!isOpen) return null;
@@ -70,9 +77,9 @@ export const CreateEmployeeModal = ({ isOpen, onClose }) => {
           value={role}
           onChange={(e) => setRole(e.target.value)}
           fullWidth
+          disabled
         >
           <MenuItem value="employee">Employee</MenuItem>
-          <MenuItem value="admin">Admin</MenuItem>
         </Select>
       </DialogContent>
 
