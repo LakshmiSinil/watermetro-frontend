@@ -1,4 +1,8 @@
+
 import { useState } from "react";
+
+import  { useState } from "react";
+
 import {
   Button,
   Dialog,
@@ -13,6 +17,7 @@ import { toast } from "react-hot-toast";
 import api from "../config/axiosInstance";
 import { useQueryClient } from "@tanstack/react-query";
 
+
 export const CreateEmployeeModal = ({ isOpen, onClose }) => {
   const queryClient = useQueryClient();
   const [name, setName] = useState("");
@@ -26,19 +31,32 @@ export const CreateEmployeeModal = ({ isOpen, onClose }) => {
   };
 
   const handleCreate = async () => {
+
     if (!name || !email) {
       toast.error("Name and Email are required");
       return;
     }
 
     try {
-      const respPromise = api.post("/users", { name, email });
+      const respPromise = api.post("/users", { name, email ,role});
 
       toast.promise(respPromise, {
         loading: "Creating...",
         success: "Employee created ✅",
         error: "Failed to create employee, try again",
       });
+
+  console.log("🚀 ~ handleCreate ~ handleCreate:", )
+
+
+   
+    
+    toast.promise(respPromise, {
+      loading: "Creating...",
+      success: "Employee created successfully ✅",
+      error: "Failed to create employee, try again",
+    });
+
 
       await respPromise;
       await queryClient.invalidateQueries({ queryKey: ["users"] });
@@ -93,4 +111,8 @@ export const CreateEmployeeModal = ({ isOpen, onClose }) => {
   );
 };
 
+
 export default CreateEmployeeModal;
+
+
+
