@@ -16,10 +16,7 @@
     "@mui/material": "^6.4.6",
     "@tanstack/react-query": "^5.67.1",
     "axios": "^1.8.1",
-<<<<<<< HEAD
     "date-fns": "^4.1.0",
-=======
->>>>>>> a33f312f4f9a0145c655ac631625a670ca21d0e2
     "prop-types": "^15.8.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

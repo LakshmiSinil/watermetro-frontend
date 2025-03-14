@@ -1,8 +1,4 @@
-
-import { useState } from "react";
-
 import  { useState } from "react";
-
 import {
   Button,
   Dialog,
@@ -47,16 +43,6 @@ export const CreateEmployeeModal = ({ isOpen, onClose }) => {
       });
 
   console.log("🚀 ~ handleCreate ~ handleCreate:", )
-
-
-   
-    
-    toast.promise(respPromise, {
-      loading: "Creating...",
-      success: "Employee created successfully ✅",
-      error: "Failed to create employee, try again",
-    });
-
 
       await respPromise;
       await queryClient.invalidateQueries({ queryKey: ["users"] });
@@ -110,8 +96,6 @@ export const CreateEmployeeModal = ({ isOpen, onClose }) => {
     </Dialog>
   );
 };
-
-
 export default CreateEmployeeModal;
 
 
