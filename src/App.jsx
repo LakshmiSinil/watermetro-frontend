@@ -21,7 +21,7 @@ function App() {
         <Toaster />
         <UserProvider>
           <Navbar />
-          <Box sx={{height:"50px",width:"100vw"}}/>
+          <Box sx={{height:"100px",width:"100vw"}}/>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/aboutus" element={<AboutPage />} />

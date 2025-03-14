@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./navbar.css";
 import { useUser } from "../context/useUser.hook.jsx";
 import { Button, IconButton } from "@mui/material";
@@ -18,7 +18,7 @@ const navLinks = [
 function Navbar() {
   const { user } = useUser();
   const navigate = useNavigate();
-  const queryClient=useQueryClient()
+  const queryClient = useQueryClient();
   const [isCreateBookingModalOpen, setIsCreateBookingModalOpen] =
     useState(false);
 
@@ -50,7 +50,7 @@ function Navbar() {
 
             {user ? (
               <>
-               Hi {user?.name}
+                Hi {user?.name}
                 <IconButton
                   aria-label="booking"
                   size="large"
@@ -60,9 +60,9 @@ function Navbar() {
                 </IconButton>
                 <Button
                   variant="contained"
-                  onClick={async() => {
-                  localStorage.clear()
-                  await queryClient.invalidateQueries({queryKey:["user"]})
+                  onClick={async () => {
+                    localStorage.clear();
+                    await queryClient.invalidateQueries({ queryKey: ["user"] });
                     navigate("/login");
                   }}
                 >
