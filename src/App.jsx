@@ -12,6 +12,8 @@ import BoatPage from "./components/BoatPage.jsx";
 import ServicePage from"./components/ServicePage.jsx";
 import { Box } from "@mui/material";
 import AdminDashboard from "./components/admindashboard.jsx";
+import BoatBookingHistory from "./components/BookingHistory.jsx";
+import ViewBoatBooking from "./components/ViewBoatBooking.jsx";
 
 function App() {
   const queryClient = new QueryClient();
@@ -21,7 +23,7 @@ function App() {
         <Toaster />
         <UserProvider>
           <Navbar />
-          <Box sx={{height:"100px",width:"100vw"}}/>
+          <Box sx={{height:"80px",width:"100vw"}}/>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/aboutus" element={<AboutPage />} />
@@ -31,6 +33,8 @@ function App() {
             <Route path="/boat" element={<BoatPage/>}/>
             <Route path="/service" element={<ServicePage/>}/>
             <Route path="/admin" element={<AdminDashboard/>}/>
+            <Route path="/bookings" element={<BoatBookingHistory/>}/>
+            <Route path="/bookings/:id" element={<ViewBoatBooking/>}/>
           </Routes>
         </UserProvider>
       </QueryClientProvider>
