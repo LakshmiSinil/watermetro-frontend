@@ -1,20 +1,16 @@
 import React, { useState } from "react";
-import "./login.css";
 import api from "../config/axiosInstance";
-import { Button, TextField } from "@mui/material";
+import { Button, TextField, Box, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
-    const [error, setError] = useState("");
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -22,7 +18,6 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const email = formData.email.trim();
     const password = formData.password.trim();
 
@@ -30,12 +25,10 @@ const Login = () => {
       setError("All fields are required!");
       return;
     }
-
     if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
       setError("Invalid email format!");
       return;
     }
-
     if (password.length < 6) {
       setError("Password must be at least 6 characters long!");
       return;
@@ -44,68 +37,113 @@ const Login = () => {
     try {
       const response = await api.post("/users/login", formData);
       localStorage.setItem("token", response.data.token);
-
       toast.success("Login successful!");
-      await queryClient.invalidateQueries({queryKey:["user"]})
-      setError(""); // Clear any previous error
-      navigate("/"); // Redirect to home page
+      await queryClient.invalidateQueries({ queryKey: ["user"] });
+      setError("");
+      navigate("/");
     } catch (err) {
       toast.error("Invalid email or password. Please try again.");
       setError("");
     }
   };
 
-
-
   return (
-    <div className="login-page">
-      <div className="glass-container">
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+        background: "linear-gradient(to bottom, #009faa, #0892ee)",
+        fontFamily: "Arial, sans-serif",
+        padding: "20px",
+      }}
+    >
+      <Box
+        sx={{
+          background: "rgba(52, 203, 223, 0.95)",
+          borderRadius: "16px",
+          padding: "30px",
+          boxShadow: "0 8px 24px rgba(255, 252, 252, 0.1)",
+          width: { xs: "90%", sm: "400px" },
+          backdropFilter: "blur(10px)",
+          border: "1px solid rgba(255, 255, 255, 0.3)",
+          textAlign: "center",
+        }}
+      >
         <img
           src="https://cdn-dev.watermetro.co.in/logo_c478d0c525.png"
           alt="Water Metro"
-          className="logo"
+          style={{ display: "block", margin: "0 auto 16px", height: "50px" }}
         />
-        <h2 className="title">Login</h2>
-        {error && <p className="error-message">{error}</p>}
+        <Typography variant="h5" sx={{ color: "#eff8ff", mb: 2 }}>
+          Login
+        </Typography>
+
+        {error && (
+          <Typography sx={{ color: "#d9534f", fontSize: "14px", mb: 1 }}>
+            {error}
+          </Typography>
+        )}
+
         <form onSubmit={handleSubmit}>
-          <label>Email</label>
           <TextField
+            label="Email"
             type="email"
             name="email"
-            placeholder="username@gmail.com"
             value={formData.email}
             onChange={handleChange}
             required
             variant="outlined"
             fullWidth
+            sx={{ mb: 2, backgroundColor: "rgba(255, 255, 255, 0.8)" }}
           />
 
-          <label>Password</label>
           <TextField
+            label="Password"
             type="password"
             name="password"
-            placeholder="password"
             value={formData.password}
             onChange={handleChange}
             required
             variant="outlined"
             fullWidth
+            sx={{ mb: 3, backgroundColor: "rgba(255, 255, 255, 0.8)" }}
           />
 
-          <Button type="submit" variant="contained" fullWidth>
+          <Button
+            type="submit"
+            variant="contained"
+            fullWidth
+            sx={{
+              backgroundColor: "#0077cc",
+              color: "white",
+              padding: "12px",
+              borderRadius: "8px",
+              fontSize: "16px",
+              "&:hover": { backgroundColor: "#005fa3" },
+            }}
+          >
             Login
           </Button>
         </form>
 
-        <p className="register-text">
-          Don't have an account yet?
-          <Button href="/register">Register for free</Button>
-          <Button href="/route">Routes</Button>
-          <Button href="/boat">Boats</Button>
-          <Button href="/service">Services</Button>
-        </p>
-      </div>
-    </div>
+        <Typography sx={{ mt: 2, fontSize: "14px", color: "white" }}>
+          Don't have an account yet?<Button href="/register" sx={{ color: "#fff", textTransform: "none" }}>
+          Register for free
+        </Button>
+        </Typography>
+        <Button href="/route" sx={{ color: "#fff", textTransform: "none" }}>
+          Routes
+        </Button>
+        <Button href="/boat" sx={{ color: "#fff", textTransform: "none" }}>
+          Boats
+        </Button>
+        <Button href="/service" sx={{ color: "#fff", textTransform: "none" }}>
+          Services
+        </Button>
+      </Box>
+    </Box>
   );
 };
 

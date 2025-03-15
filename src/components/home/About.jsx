@@ -1,7 +1,5 @@
 import React from "react";
 import { FaShip, FaClock, FaUsers, FaMapMarkerAlt } from "react-icons/fa";
-import './about.css';
-
 
 const features = [
   {
@@ -27,27 +25,95 @@ const features = [
 ];
 
 export function AboutSection() {
+  const sectionStyle = {
+    padding: "5rem 1rem",
+    backgroundColor: "#ebe9e9",
+    textAlign: "center",
+  };
+
+  const containerStyle = {
+    maxWidth: "1200px",
+    margin: "0 auto",
+  };
+
+  const titleStyle = {
+    fontSize: "2rem",
+    fontWeight: 700,
+    marginBottom: "1rem",
+  };
+
+  const descriptionStyle = {
+    color: "#4a5568",
+    maxWidth: "40rem",
+    margin: "0 auto",
+  };
+
+  const contentGridStyle = {
+    display: "grid",
+    gap: "3rem",
+    gridTemplateColumns: window.innerWidth >= 768 ? "1fr 1fr" : "1fr",
+    alignItems: "center",
+  };
+
+  const imageContainerStyle = {
+    position: "relative",
+    height: "300px",
+    borderRadius: "0.5rem",
+    overflow: "hidden",
+  };
+
+  const imageStyle = {
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+  };
+
+  const featuresGridStyle = {
+    display: "grid",
+    gap: "1.5rem",
+    gridTemplateColumns: window.innerWidth >= 640 ? "1fr 1fr" : "1fr",
+  };
+
+  const featureCardStyle = {
+    padding: "1.5rem",
+    backgroundColor: "#ffffff",
+    borderRadius: "0.5rem",
+    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+    textAlign: "center",
+  };
+
+  const iconStyle = {
+    width: "2rem",
+    height: "2rem",
+    color: "#3182ce",
+    marginBottom: "1rem",
+  };
+
   return (
-    <section className="about-section">
-      <div className="container">
-        <div className="text-center mb-12">
-          <h2 className="section-title">About Water Metro</h2>
-          <p className="section-description">
+    <section style={sectionStyle}>
+      <div style={containerStyle}>
+        <div style={{ marginBottom: "3rem" }}>
+          <h2 style={titleStyle}>About Water Metro</h2>
+          <p style={descriptionStyle}>
             An integrated water transport system providing modern, safe, and comfortable travel experience across waterways.
           </p>
         </div>
 
-        <div className="content-grid">
-          <div className="image-container">
-            <img src="https://cdn-dev.watermetro.co.in/boat0001_7dd6617bec.png" alt="Water Metro Boat" className="image" />
+        <div style={contentGridStyle}>
+          <div style={imageContainerStyle}>
+            <img
+              src="https://cdn-dev.watermetro.co.in/boat0001_7dd6617bec.png"
+              alt="Water Metro Boat"
+              style={imageStyle}
+            />
           </div>
 
-          <div className="features-grid">
+          <div style={featuresGridStyle}>
             {features.map((feature) => (
-              <div key={feature.title} className="feature-card">
-                <feature.icon className="feature-icon" />
-                <h3 className="feature-title">{feature.title}</h3>
-                <p className="feature-description">{feature.description}</p>
+              <div key={feature.title} style={featureCardStyle}>
+                <feature.icon style={iconStyle} />
+                <h3>{feature.title}</h3>
+                <p>{feature.description}</p>
               </div>
             ))}
           </div>

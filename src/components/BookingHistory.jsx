@@ -40,10 +40,10 @@ function BoatBookingHistory() {
               <CardContent>
                 <Typography variant="h6" fontWeight="bold">
                   {booking.serviceId?.boatId?.name}
+                  
                 </Typography>
                 <Typography variant="body2" sx={{ marginTop: "5px" }}>
-                  Route: {booking.routeId?.fromLocation} -{" "}
-                  {booking.routeId?.toLocation}
+                  Route: {booking.routeId?.fromLocation} -{booking.routeId?.toLocation}
                 </Typography>
                 <Typography variant="body2">
                   Passengers: {booking.passengerCount}

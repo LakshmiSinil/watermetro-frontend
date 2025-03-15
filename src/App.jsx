@@ -14,7 +14,7 @@ import { Box } from "@mui/material";
 import AdminDashboard from "./components/admindashboard.jsx";
 import BoatBookingHistory from "./components/BookingHistory.jsx";
 import ViewBoatBooking from "./components/ViewBoatBooking.jsx";
-
+import KnowYourJourney from "./components/knowyourjourney.jsx";
 function App() {
   const queryClient = new QueryClient();
   return (
@@ -27,6 +27,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/aboutus" element={<AboutPage />} />
+            <Route path="/knowyourjourney" element={<KnowYourJourney />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/route" element={<RoutePage/>}/>
