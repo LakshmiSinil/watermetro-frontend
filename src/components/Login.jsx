@@ -40,6 +40,10 @@ const Login = () => {
       toast.success("Login successful!");
       await queryClient.invalidateQueries({ queryKey: ["user"] });
       setError("");
+      if (response?.data?.user?.role === "admin") {
+        navigate("/admin");
+        return;
+      }
       navigate("/");
     } catch (err) {
       toast.error("Invalid email or password. Please try again.");
@@ -129,9 +133,13 @@ const Login = () => {
         </form>
 
         <Typography sx={{ mt: 2, fontSize: "14px", color: "white" }}>
-          Don't have an account yet?<Button href="/register" sx={{ color: "#fff", textTransform: "none" }}>
-          Register for free
-        </Button>
+          Don't have an account yet?
+          <Button
+            href="/register"
+            sx={{ color: "#fff", textTransform: "none" }}
+          >
+            Register for free
+          </Button>
         </Typography>
         <Button href="/route" sx={{ color: "#fff", textTransform: "none" }}>
           Routes

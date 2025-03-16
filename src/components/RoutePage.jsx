@@ -65,7 +65,7 @@ function RoutePage() {
   };
 
   return (
-    <Box sx={{ paddingInline: "160px" }}>
+    <Box sx={{ padding: "60px",paddingInline:"160px" }}>
       <Box
         sx={{
           width: "100%",

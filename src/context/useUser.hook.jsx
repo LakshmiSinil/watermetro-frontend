@@ -4,16 +4,21 @@ import api from "../config/axiosInstance";
 const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
-  const { data: user } = useQuery({
+  const { data: user,isLoading } = useQuery({
     queryKey: ["user"],
     queryFn: async () => {
-      const res = await api.get("/users/me");
-      return res?.data?.user;
+      try {
+        const res = await api.get("/users/me");
+        return res?.data?.user;
+      } catch (error) {
+        return null
+      }
     },
+    
     retry:false
   });
   return (
-    <UserContext.Provider value={{ user }}>{children}</UserContext.Provider>
+    <UserContext.Provider value={{ user,isLoading }}>{children}</UserContext.Provider>
   );
 };
 

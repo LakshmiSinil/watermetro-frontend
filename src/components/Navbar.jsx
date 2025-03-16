@@ -7,26 +7,31 @@ import { useUser } from "../context/useUser.hook.jsx";
 import CreateBookingModal from "./CreateBookingModel";
 import { useQueryClient } from "@tanstack/react-query";
 
-const navLinks = [
-  { path: "/", label: "Home" },
-  { path: "/aboutus", label: "About Us" },
-  { path: "/knowyourjourney", label: "Know Your Journey" },
-];
-
 function Navbar() {
   const { user } = useUser();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const [isCreateBookingModalOpen, setIsCreateBookingModalOpen] = useState(false);
+  const [isCreateBookingModalOpen, setIsCreateBookingModalOpen] =
+    useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleOpenDialog = () => setIsCreateBookingModalOpen(true);
   const handleCloseDialog = () => setIsCreateBookingModalOpen(false);
   const handleLogout = async () => {
     localStorage.clear();
-    await queryClient.invalidateQueries({ queryKey: ["user"] });
+    await queryClient.refetchQueries({ queryKey: ["user"] });
     navigate("/login");
   };
+
+  const isAdminPage = user?.role === "admin";
+
+  const navLinks = [
+    { path: "/", label: "Home" },
+    { path: "/aboutus", label: "About Us" },
+    { path: "/knowyourjourney", label: "Know Your Journey" },
+  ];
+
+  const adminLinks = [{ path: "/route", label: "Routes" }];
 
   return (
     <Box
@@ -52,11 +57,19 @@ function Navbar() {
           style={{ height: "2rem" }}
         />
       </Box>
-
-      {/* Desktop Navigation */}
-      <Box sx={{ display: { xs: "none", md: "flex" }, gap: "2rem", alignItems: "center" }}>
-        {navLinks.map((link) => (
-          <Button key={link.path} onClick={() => navigate(link.path)} sx={{ color: "#333" }}>
+      <Box
+        sx={{
+          display: { xs: "none", md: "flex" },
+          gap: "2rem",
+          alignItems: "center",
+        }}
+      >
+        {(isAdminPage ? adminLinks : navLinks)?.map((link) => (
+          <Button
+            key={link.path}
+            onClick={() => navigate(link.path)}
+            sx={{ color: "#333" }}
+          >
             {link.label}
           </Button>
         ))}
@@ -64,9 +77,15 @@ function Navbar() {
         {user ? (
           <>
             <Typography>Hi {user?.name}</Typography>
-            <IconButton aria-label="booking" size="large" onClick={handleOpenDialog}>
-              <DirectionsBoatFilledIcon />
-            </IconButton>
+            {!isAdminPage && (
+              <IconButton
+                aria-label="booking"
+                size="large"
+                onClick={handleOpenDialog}
+              >
+                <DirectionsBoatFilledIcon />
+              </IconButton>
+            )}
             <Button variant="contained" color="primary" onClick={handleLogout}>
               Logout
             </Button>
@@ -114,10 +133,18 @@ function Navbar() {
           {user ? (
             <>
               <Typography>Hi {user?.name}</Typography>
-              <IconButton aria-label="booking" size="large" onClick={handleOpenDialog}>
+              <IconButton
+                aria-label="booking"
+                size="large"
+                onClick={handleOpenDialog}
+              >
                 <DirectionsBoatFilledIcon />
               </IconButton>
-              <Button variant="contained" color="primary" onClick={handleLogout}>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleLogout}
+              >
                 Logout
               </Button>
             </>
@@ -134,7 +161,10 @@ function Navbar() {
         </Box>
       )}
 
-      <CreateBookingModal isOpen={isCreateBookingModalOpen} onClose={handleCloseDialog} />
+      <CreateBookingModal
+        isOpen={isCreateBookingModalOpen}
+        onClose={handleCloseDialog}
+      />
     </Box>
   );
 }
