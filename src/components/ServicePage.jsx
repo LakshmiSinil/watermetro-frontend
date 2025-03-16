@@ -90,12 +90,12 @@ function ServicePage() {
 
       <TableContainer component={Paper} sx={{ marginTop: 3 }}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
+          <TableHead sx={{ backgroundColor: "#1976d2" }}>
             <TableRow>
-              <TableCell align="center">Route </TableCell>
-              <TableCell align="center">Boat </TableCell>
-              <TableCell align="center">Time</TableCell>
-              <TableCell align="center">Action</TableCell>
+              <TableCell align="center"sx={{ color: "white", fontWeight: "bold" }}>Route </TableCell>
+              <TableCell align="center"sx={{ color: "white", fontWeight: "bold" }}>Boat </TableCell>
+              <TableCell align="center"sx={{ color: "white", fontWeight: "bold" }}>Time</TableCell>
+              <TableCell align="center"sx={{ color: "white", fontWeight: "bold" }}>Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

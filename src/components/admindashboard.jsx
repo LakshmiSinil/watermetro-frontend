@@ -143,12 +143,12 @@ function AdminPage() {
 
       <TableContainer component={Paper} sx={{ marginTop: 3 }}>
         <Table sx={{ minWidth: 650 }} aria-label="employee table">
-          <TableHead>
+          <TableHead sx={{ backgroundColor: "#1976d2" }}>
             <TableRow>
-              <TableCell align="center">Name</TableCell>
-              <TableCell align="center">Email</TableCell>
-              <TableCell align="center">Role</TableCell>
-              <TableCell align="center">Action</TableCell>
+              <TableCell align="center"sx={{ color: "white", fontWeight: "bold" }}>Name</TableCell>
+              <TableCell align="center"sx={{ color: "white", fontWeight: "bold" }}>Email</TableCell>
+              <TableCell align="center"sx={{ color: "white", fontWeight: "bold" }}>Role</TableCell>
+              <TableCell align="center"sx={{ color: "white", fontWeight: "bold" }}>Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

@@ -85,13 +85,13 @@ function BoatPage() {
 
       <TableContainer component={Paper} sx={{ marginTop: 3 }}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
-          <TableHead>
+          <TableHead sx={{ backgroundColor: "#1976d2" }}>
             <TableRow>
-              <TableCell align="center">Name</TableCell>
-              <TableCell align="center">Route</TableCell>
-              <TableCell align="center">Employee</TableCell>
-              <TableCell align="center">Status</TableCell>
-              <TableCell align="center">Action</TableCell>
+              <TableCell align="center"sx={{ color: "white", fontWeight: "bold" }}>Name</TableCell>
+              <TableCell align="center"sx={{ color: "white", fontWeight: "bold" }}>Route</TableCell>
+              <TableCell align="center"sx={{ color: "white", fontWeight: "bold" }}>Employee</TableCell>
+              <TableCell align="center"sx={{ color: "white", fontWeight: "bold" }}>Status</TableCell>
+              <TableCell align="center"sx={{ color: "white", fontWeight: "bold" }}>Action</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
