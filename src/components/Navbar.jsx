@@ -31,7 +31,11 @@ function Navbar() {
     { path: "/knowyourjourney", label: "Know Your Journey" },
   ];
 
-  const adminLinks = [{ path: "/route", label: "Routes" }];
+  const adminLinks = [{ path: "/admin", label: "home" },
+  { path: "/route", label: "Routes" },
+  { path: "/service", label: "Services" },
+  { path: "/boat", label: "Boats" }
+];
 
   return (
     <Box

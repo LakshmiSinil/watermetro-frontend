@@ -141,15 +141,7 @@ const Login = () => {
             Register for free
           </Button>
         </Typography>
-        <Button href="/route" sx={{ color: "#fff", textTransform: "none" }}>
-          Routes
-        </Button>
-        <Button href="/boat" sx={{ color: "#fff", textTransform: "none" }}>
-          Boats
-        </Button>
-        <Button href="/service" sx={{ color: "#fff", textTransform: "none" }}>
-          Services
-        </Button>
+       
       </Box>
     </Box>
   );
