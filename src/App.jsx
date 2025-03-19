@@ -16,6 +16,8 @@ import BoatBookingHistory from "./components/BookingHistory.jsx";
 import ViewBoatBooking from "./components/ViewBoatBooking.jsx";
 import KnowYourJourney from "./components/knowyourjourney.jsx";
 import PrivateRoute from "./components/hoc/PrivateRoute.jsx";
+import EmployeeDashboard from "./components/EmployeeDashboard.jsx";
+
 
 function App() {
   const queryClient = new QueryClient();
@@ -25,21 +27,51 @@ function App() {
         <Toaster />
         <UserProvider>
           <Navbar />
-          <Box sx={{ height: "60px", width: "100vw" }} />
+          <Box sx={{ height: "80px", width: "100vw" }} />
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/aboutus" element={<AboutPage />} />
             <Route path="/knowyourjourney" element={<KnowYourJourney />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
-            <Route path="/route" element={<RoutePage />} />
-            <Route path="/boat" element={<BoatPage />} />
-            <Route path="/service" element={<ServicePage />} />
+            
+            <Route
+              path="/route"
+              element={
+                <PrivateRoute allowedRoles={["admin","employee"]}>
+                  <RoutePage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/boat"
+              element={
+                <PrivateRoute allowedRoles={["admin","employee"]}>
+                  <BoatPage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/service"
+              element={
+                <PrivateRoute allowedRoles={["admin","employee"]}>
+                  <ServicePage />
+                </PrivateRoute>
+              }
+            />
             <Route
               path="/admin"
               element={
-                <PrivateRoute allowedRoles={['admin']}>
+                <PrivateRoute allowedRoles={["admin"]}>
                   <AdminDashboard />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/employee"
+              element={
+                <PrivateRoute allowedRoles={["employee"]}>
+                  <EmployeeDashboard />
                 </PrivateRoute>
               }
             />
