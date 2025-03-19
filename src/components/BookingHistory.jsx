@@ -3,7 +3,6 @@ import { Card, CardContent, Typography, Divider, Box } from "@mui/material";
 import api from "../config/axiosInstance";
 import { useQuery,  } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-
 import CreateBookingModal from "./CreateBookingModel";
 
 function BoatBookingHistory() {
@@ -12,7 +11,7 @@ function BoatBookingHistory() {
   const { data: bookings = [] } = useQuery({
     queryKey: ["bookings"],
     queryFn: async () => {
-      const res = await api.get("/bookings");
+      const res = await api.get("/bookings/mine");
       return res.data.bookings;
     },
   });
@@ -29,7 +28,6 @@ function BoatBookingHistory() {
             key={booking._id}
             sx={{ marginBottom: "20px" }}
             onClick={() => {
-              console.log('clicked')
               navigate("/bookings/" + booking._id);
             }}
           >
@@ -55,11 +53,11 @@ function BoatBookingHistory() {
                   variant="body2"
                   fontWeight="bold"
                   sx={{
-                    color: booking.isPaid ? "green" : "red",
+                    color: booking.ispaid ? "green" : "red",
                     marginTop: "5px",
                   }}
                 >
-                  {booking.isPaid ? "Paid" : "Not Paid"}
+                  {booking.ispaid ? "Paid" : "Not Paid"}
                 </Typography>
               </CardContent>
             </Card>

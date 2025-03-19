@@ -74,11 +74,11 @@ const ViewBoatBooking = () => {
             variant="body2"
             fontWeight="bold"
             sx={{
-              color: booking.isPaid ? "green" : "red",
+              color: booking.ispaid ? "green" : "red",
               marginTop: "5px",
             }}
           >
-            {booking.isPaid ? "Paid" : "Not Paid"}
+            {booking.ispaid ? "Paid" : "Not Paid"}
           </Typography>
         </CardContent>
       </Card>
