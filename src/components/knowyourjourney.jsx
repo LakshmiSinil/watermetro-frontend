@@ -48,7 +48,27 @@ export default function KnowYourJourney() {
             </h1>
             <p style={{ fontSize: "1.25rem", textAlign: "center" }}>
               Plan your water metro journey across Kochi
+            
             </p>
+            <h2
+        style={{
+          color: "white",
+          fontSize: "24px",
+          fontWeight: "bold",
+          position: "relative",
+          animation: "moveText 3s infinite alternate",
+        }}
+      >
+        Please sign up to reserve your tickets.
+      </h2>
+      <style>
+        {`
+          @keyframes moveText {
+            0% { left: 0px; }
+            100% { left: 50px; }
+          }
+        `}
+      </style>
           </div>
         </div>
 

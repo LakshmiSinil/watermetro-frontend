@@ -86,6 +86,25 @@ const HeroSection = () => {
         <p style={textStyle}>
           Experience modern water transport system connecting islands to the mainland
         </p>
+        <h2
+        style={{
+          color: "white",
+          fontSize: "24px",
+          fontWeight: "bold",
+          position: "relative",
+          animation: "moveText 3s infinite alternate",
+        }}
+      >
+        Please sign up to reserve your tickets.
+      </h2>
+      <style>
+        {`
+          @keyframes moveText {
+            0% { left: 0px; }
+            100% { left: 50px; }
+          }
+        `}
+      </style>
       </div>
 
       {/* Scroll Down Indicator */}

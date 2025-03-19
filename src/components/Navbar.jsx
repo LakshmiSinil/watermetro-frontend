@@ -16,15 +16,17 @@ import { useUser } from "../context/useUser.hook.jsx";
 import CreateBookingModal from "./CreateBookingModel";
 import ProfileModel from "./ProfileModel.jsx";
 import { useQueryClient } from "@tanstack/react-query";
+import { useLocation } from "react-router-dom";
 
 function Navbar() {
   const { user } = useUser();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const location = useLocation();
+
   const [isCreateBookingModalOpen, setIsCreateBookingModalOpen] =
     useState(false);
   const [isProfileModelOpen, setIsProfileModelOpen] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
 
   // Modal Handlers
@@ -45,23 +47,22 @@ function Navbar() {
   const handleMenuClose = () => setAnchorEl(null);
 
   // Navigation Links
-  const isAdminOrEmployee = user?.role === "admin"||user?.role === "employee";
-  const isAdmin =user?.role === "admin";
-  const isEmployee =user?.role === "employee";
+  const isAdminOrEmployee = user?.role === "admin" || user?.role === "employee";
+  const isAdmin = user?.role === "admin";
 
   const navLinks = [
     { path: "/", label: "Home" },
     { path: "/aboutus", label: "About Us" },
     { path: "/knowyourjourney", label: "Know Your Journey" },
   ];
+
   const adminLinks = [
-    { path:isAdmin? "/admin":"/employee", label: "Home" },
+    { path: isAdmin ? "/admin" : "/employee", label: "Home" },
     { path: "/route", label: "Routes" },
     { path: "/service", label: "Services" },
     { path: "/boat", label: "Boats" },
   ];
- 
- 
+
   return (
     <Box
       sx={{
@@ -88,45 +89,51 @@ function Navbar() {
         />
       </Box>
 
-      {/* Desktop Navigation */}
-      <Box
-        sx={{
-          display: { xs: "none", md: "flex" },
-          gap: "2rem",
-          alignItems: "center",
-        }}
-      >
+      <Box sx={{ display: "flex", gap: "2rem", alignItems: "center" }}>
         {(isAdminOrEmployee ? adminLinks : navLinks).map((link) => (
           <Button
             key={link.path}
             onClick={() => navigate(link.path)}
-            sx={{ color: "#333" }}
+            sx={{
+              color: location.pathname === link.path ? "primary.main" : "#333",
+              fontWeight: location.pathname === link.path ? "bold" : "normal",
+            }}
           >
             {link.label}
           </Button>
         ))}
-       
+
         {user ? (
           <>
-            <Typography>Hi {user?.name}</Typography>
             {!isAdmin && (
-              <IconButton
-                aria-label="booking"
-                size="large"
-                onClick={handleOpenBookingModal}
-              >
-                <DirectionsBoatFilledIcon />
-              </IconButton>
+              <>
+              <Button variant="text" onClick={() => navigate("/bookings")}>
+                  My Bookings
+                </Button>
+                <IconButton
+                  aria-label="booking"
+                  size="large"
+                  onClick={handleOpenBookingModal}
+                >
+                  <DirectionsBoatFilledIcon />
+                </IconButton>
+                
+              </>
             )}
-
+            <Typography>Hi {user?.name}</Typography>
             {/* Avatar Dropdown */}
-            <IconButton onClick={handleAvatarClick}>
-              <Avatar src="/broken-image.jpg" />
+            <IconButton
+              onClick={handleAvatarClick}
+              aria-controls="user-menu"
+              aria-haspopup="true"
+            >
+              <Avatar src={user?.avatar || "/broken-image.jpg"} />
             </IconButton>
             <Menu
               anchorEl={anchorEl}
               open={Boolean(anchorEl)}
               onClose={handleMenuClose}
+              id="user-menu"
             >
               <MenuItem onClick={handleOpenProfileModal}>
                 <AccountCircle sx={{ mr: 1 }} /> Profile
