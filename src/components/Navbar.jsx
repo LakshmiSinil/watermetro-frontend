@@ -1,10 +1,20 @@
 import { useState } from "react";
-import { Button, IconButton, Box, Typography } from "@mui/material";
+import {
+  Button,
+  IconButton,
+  Box,
+  Typography,
+  Avatar,
+  Menu,
+  MenuItem,
+  Divider,
+} from "@mui/material";
+import { AccountCircle, Logout } from "@mui/icons-material";
 import DirectionsBoatFilledIcon from "@mui/icons-material/DirectionsBoatFilled";
-import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/useUser.hook.jsx";
 import CreateBookingModal from "./CreateBookingModel";
+import ProfileModel from "./ProfileModel.jsx";
 import { useQueryClient } from "@tanstack/react-query";
 
 function Navbar() {
@@ -13,30 +23,45 @@ function Navbar() {
   const queryClient = useQueryClient();
   const [isCreateBookingModalOpen, setIsCreateBookingModalOpen] =
     useState(false);
+  const [isProfileModelOpen, setIsProfileModelOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
 
-  const handleOpenDialog = () => setIsCreateBookingModalOpen(true);
-  const handleCloseDialog = () => setIsCreateBookingModalOpen(false);
+  // Modal Handlers
+  const handleOpenBookingModal = () => setIsCreateBookingModalOpen(true);
+  const handleCloseBookingModal = () => setIsCreateBookingModalOpen(false);
+  const handleOpenProfileModal = () => setIsProfileModelOpen(true);
+  const handleCloseProfileModal = () => setIsProfileModelOpen(false);
+
+  // Logout Handler
   const handleLogout = async () => {
     localStorage.clear();
     await queryClient.refetchQueries({ queryKey: ["user"] });
     navigate("/login");
   };
 
-  const isAdminPage = user?.role === "admin";
+  // Avatar Menu Handlers
+  const handleAvatarClick = (event) => setAnchorEl(event.currentTarget);
+  const handleMenuClose = () => setAnchorEl(null);
+
+  // Navigation Links
+  const isAdminOrEmployee = user?.role === "admin"||user?.role === "employee";
+  const isAdmin =user?.role === "admin";
+  const isEmployee =user?.role === "employee";
 
   const navLinks = [
     { path: "/", label: "Home" },
     { path: "/aboutus", label: "About Us" },
     { path: "/knowyourjourney", label: "Know Your Journey" },
   ];
-
-  const adminLinks = [{ path: "/admin", label: "home" },
-  { path: "/route", label: "Routes" },
-  { path: "/service", label: "Services" },
-  { path: "/boat", label: "Boats" }
-];
-
+  const adminLinks = [
+    { path:isAdmin? "/admin":"/employee", label: "Home" },
+    { path: "/route", label: "Routes" },
+    { path: "/service", label: "Services" },
+    { path: "/boat", label: "Boats" },
+  ];
+ 
+ 
   return (
     <Box
       sx={{
@@ -54,6 +79,7 @@ function Navbar() {
         alignItems: "center",
       }}
     >
+      {/* Logo */}
       <Box onClick={() => navigate("/")} sx={{ cursor: "pointer" }}>
         <img
           src="https://cdn-dev.watermetro.co.in/logo_c478d0c525.png"
@@ -61,6 +87,8 @@ function Navbar() {
           style={{ height: "2rem" }}
         />
       </Box>
+
+      {/* Desktop Navigation */}
       <Box
         sx={{
           display: { xs: "none", md: "flex" },
@@ -68,7 +96,7 @@ function Navbar() {
           alignItems: "center",
         }}
       >
-        {(isAdminPage ? adminLinks : navLinks)?.map((link) => (
+        {(isAdminOrEmployee ? adminLinks : navLinks).map((link) => (
           <Button
             key={link.path}
             onClick={() => navigate(link.path)}
@@ -77,22 +105,37 @@ function Navbar() {
             {link.label}
           </Button>
         ))}
-
+       
         {user ? (
           <>
             <Typography>Hi {user?.name}</Typography>
-            {!isAdminPage && (
+            {!isAdmin && (
               <IconButton
                 aria-label="booking"
                 size="large"
-                onClick={handleOpenDialog}
+                onClick={handleOpenBookingModal}
               >
                 <DirectionsBoatFilledIcon />
               </IconButton>
             )}
-            <Button variant="contained" color="primary" onClick={handleLogout}>
-              Logout
-            </Button>
+
+            {/* Avatar Dropdown */}
+            <IconButton onClick={handleAvatarClick}>
+              <Avatar src="/broken-image.jpg" />
+            </IconButton>
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+            >
+              <MenuItem onClick={handleOpenProfileModal}>
+                <AccountCircle sx={{ mr: 1 }} /> Profile
+              </MenuItem>
+              <Divider />
+              <MenuItem onClick={handleLogout}>
+                <Logout sx={{ mr: 1 }} /> Logout
+              </MenuItem>
+            </Menu>
           </>
         ) : (
           <>
@@ -106,68 +149,14 @@ function Navbar() {
         )}
       </Box>
 
-      {/* Mobile Navigation */}
-      <IconButton
-        sx={{ display: { xs: "block", md: "none" } }}
-        onClick={() => setMenuOpen(!menuOpen)}
-      >
-        <MenuIcon />
-      </IconButton>
-
-      {menuOpen && (
-        <Box
-          sx={{
-            position: "absolute",
-            top: "100%",
-            right: "1rem",
-            background: "white",
-            boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
-            padding: "1rem",
-            display: "flex",
-            flexDirection: "column",
-            gap: "1rem",
-          }}
-        >
-          {navLinks.map((link) => (
-            <Button key={link.path} onClick={() => navigate(link.path)}>
-              {link.label}
-            </Button>
-          ))}
-
-          {user ? (
-            <>
-              <Typography>Hi {user?.name}</Typography>
-              <IconButton
-                aria-label="booking"
-                size="large"
-                onClick={handleOpenDialog}
-              >
-                <DirectionsBoatFilledIcon />
-              </IconButton>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleLogout}
-              >
-                Logout
-              </Button>
-            </>
-          ) : (
-            <>
-              <Button variant="outlined" onClick={() => navigate("/login")}>
-                Login
-              </Button>
-              <Button variant="outlined" onClick={() => navigate("/register")}>
-                Register
-              </Button>
-            </>
-          )}
-        </Box>
-      )}
-
+      {/* Modals */}
       <CreateBookingModal
         isOpen={isCreateBookingModalOpen}
-        onClose={handleCloseDialog}
+        onClose={handleCloseBookingModal}
+      />
+      <ProfileModel
+        isOpen={isProfileModelOpen}
+        onClose={handleCloseProfileModal}
       />
     </Box>
   );

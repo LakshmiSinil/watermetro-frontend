@@ -57,10 +57,10 @@ const Login = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "100vh",
+        height: "89vh",
         background: "linear-gradient(to bottom, #009faa, #0892ee)",
         fontFamily: "Arial, sans-serif",
-        padding: "20px",
+        padding: "1px",
       }}
     >
       <Box
