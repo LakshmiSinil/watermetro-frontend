@@ -19,14 +19,14 @@ import {
 } from "@mui/material";
 import CreateLeaveModal from "./CreateLeaveModal";
 
-const fetchServices = async () => {
-  // const { data } = await api.get("/services/mine");
-  // return data.services;
-  return []
+const fetchEmployeeServices = async (employeeId) => {
+  const { data } = await api.get(`/services/employee/${employeeId}`);
+  return data.services;
 };
 
 function EmployeePage() {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const employeeId = localStorage.getItem("employeeId"); // Assuming ID is stored in localStorage
 
   const { data: leaves } = useQuery({
     queryKey: ["leaves"],
@@ -41,18 +41,10 @@ function EmployeePage() {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["services", "mine"],
-    queryFn: fetchServices,
+    queryKey: ["services", employeeId],
+    queryFn: () => fetchEmployeeServices(employeeId),
+    enabled: !!employeeId, // Prevents query from running if employeeId is missing
   });
-
-  const { data: boats } = useQuery({
-    queryKey: ["boat"],
-    queryFn: async () => {
-      const res = await api.get("boats/mine");
-      return res.data.boat;
-    },
-  });
-  console.log("🚀 ~ EmployeePage ~ boats:", boats)
 
   const handleOpenDialog = () => setIsCreateModalOpen(true);
   const handleCloseDialog = () => setIsCreateModalOpen(false);
@@ -64,7 +56,7 @@ function EmployeePage() {
   return (
     <Box sx={{ padding: "20px" }}>
       <Typography variant="h5" gutterBottom>
-        Available Services
+        My Services
       </Typography>
 
       {services.length > 0 ? (
@@ -76,8 +68,7 @@ function EmployeePage() {
                   {service.boatId?.name}
                 </Typography>
                 <Typography variant="body2" sx={{ marginTop: "5px" }}>
-                  Route: {service.routeId?.fromLocation} -{" "}
-                  {service.routeId?.toLocation}
+                  Route: {service.routeId?.fromLocation} - {service.routeId?.toLocation}
                 </Typography>
                 <Typography variant="body2">Time: {service.time}</Typography>
               </CardContent>
@@ -115,34 +106,19 @@ function EmployeePage() {
         <Table sx={{ minWidth: 650 }} aria-label="leave table">
           <TableHead sx={{ backgroundColor: "#1976d2" }}>
             <TableRow>
-              <TableCell
-                align="center"
-                sx={{ color: "white", fontWeight: "bold" }}
-              >
+              <TableCell align="center" sx={{ color: "white", fontWeight: "bold" }}>
                 Employee Name
               </TableCell>
-              <TableCell
-                align="center"
-                sx={{ color: "white", fontWeight: "bold" }}
-              >
+              <TableCell align="center" sx={{ color: "white", fontWeight: "bold" }}>
                 Start Date
               </TableCell>
-              <TableCell
-                align="center"
-                sx={{ color: "white", fontWeight: "bold" }}
-              >
+              <TableCell align="center" sx={{ color: "white", fontWeight: "bold" }}>
                 End Date
               </TableCell>
-              <TableCell
-                align="center"
-                sx={{ color: "white", fontWeight: "bold" }}
-              >
+              <TableCell align="center" sx={{ color: "white", fontWeight: "bold" }}>
                 Reason
               </TableCell>
-              <TableCell
-                align="center"
-                sx={{ color: "white", fontWeight: "bold" }}
-              >
+              <TableCell align="center" sx={{ color: "white", fontWeight: "bold" }}>
                 Status
               </TableCell>
             </TableRow>
@@ -150,15 +126,9 @@ function EmployeePage() {
           <TableBody>
             {leaves?.map((leave) => (
               <TableRow key={leave._id}>
-                <TableCell align="center">
-                  {leave.userId?.name || "N/A"}
-                </TableCell>
-                <TableCell align="center">
-                  {new Date(leave.startDate).toLocaleDateString()}
-                </TableCell>
-                <TableCell align="center">
-                  {new Date(leave.endDate).toLocaleDateString()}
-                </TableCell>
+                <TableCell align="center">{leave.userId?.name || "N/A"}</TableCell>
+                <TableCell align="center">{new Date(leave.startDate).toLocaleDateString()}</TableCell>
+                <TableCell align="center">{new Date(leave.endDate).toLocaleDateString()}</TableCell>
                 <TableCell align="center">{leave.reason}</TableCell>
                 <TableCell
                   align="center"
@@ -181,10 +151,7 @@ function EmployeePage() {
       </TableContainer>
 
       {/* Create Leave Modal */}
-      <CreateLeaveModal
-        isOpen={isCreateModalOpen}
-        onClose={handleCloseDialog}
-      />
+      <CreateLeaveModal isOpen={isCreateModalOpen} onClose={handleCloseDialog} />
     </Box>
   );
 }

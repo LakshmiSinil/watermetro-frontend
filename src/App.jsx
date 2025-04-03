@@ -17,7 +17,8 @@ import ViewBoatBooking from "./components/ViewBoatBooking.jsx";
 import KnowYourJourney from "./components/knowyourjourney.jsx";
 import PrivateRoute from "./components/hoc/PrivateRoute.jsx";
 import EmployeeDashboard from "./components/EmployeeDashboard.jsx";
-
+import AdminNotificationPage from "./components/AdminNotificationPage.jsx";
+import LeavePage from "./components/LeavePage.jsx";
 
 function App() {
   const queryClient = new QueryClient();
@@ -40,6 +41,22 @@ function App() {
               element={
                 <PrivateRoute allowedRoles={["admin","employee"]}>
                   <RoutePage />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/notification"
+              element={
+                <PrivateRoute allowedRoles={["admin"]}>
+                  <AdminNotificationPage/>
+                </PrivateRoute>
+              }
+            />
+             <Route
+              path="/leave"
+              element={
+                <PrivateRoute allowedRoles={["admin"]}>
+                  <LeavePage/>
                 </PrivateRoute>
               }
             />

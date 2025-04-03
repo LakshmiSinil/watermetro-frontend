@@ -11,9 +11,11 @@ import {
 } from "@mui/material";
 import { AccountCircle, Logout } from "@mui/icons-material";
 import DirectionsBoatFilledIcon from "@mui/icons-material/DirectionsBoatFilled";
+import NotificationsIcon from "@mui/icons-material/Notifications";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/useUser.hook.jsx";
 import CreateBookingModal from "./CreateBookingModel";
+import UserNotificationModal from "./UserNotificationModal.jsx";
 import ProfileModel from "./ProfileModel.jsx";
 import { useQueryClient } from "@tanstack/react-query";
 import { useLocation } from "react-router-dom";
@@ -26,12 +28,16 @@ function Navbar() {
 
   const [isCreateBookingModalOpen, setIsCreateBookingModalOpen] =
     useState(false);
+  const [isUserNotificationModalOpen, setIsUserNotificationModalOpen] =
+    useState(false);
   const [isProfileModelOpen, setIsProfileModelOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
 
   // Modal Handlers
   const handleOpenBookingModal = () => setIsCreateBookingModalOpen(true);
   const handleCloseBookingModal = () => setIsCreateBookingModalOpen(false);
+  const handleOpenUserviewModal = () => setIsUserNotificationModalOpen(true);
+  const handleCloseUserviewModal = () => setIsUserNotificationModalOpen(false);
   const handleOpenProfileModal = () => setIsProfileModelOpen(true);
   const handleCloseProfileModal = () => setIsProfileModelOpen(false);
 
@@ -49,6 +55,7 @@ function Navbar() {
   // Navigation Links
   const isAdminOrEmployee = user?.role === "admin" || user?.role === "employee";
   const isAdmin = user?.role === "admin";
+  const isEmployee = user?.role === "employee";
 
   const navLinks = [
     { path: "/", label: "Home" },
@@ -61,6 +68,15 @@ function Navbar() {
     { path: "/route", label: "Routes" },
     { path: "/service", label: "Services" },
     { path: "/boat", label: "Boats" },
+    ...(!isEmployee
+      ? [
+          { path: isAdmin ? "/leave" : "/", label: "Leaves" },
+          {
+            path: isAdmin ? "/notification" : "/",
+            label: <NotificationsIcon />
+          },
+        ]
+      : []),
   ];
 
   return (
@@ -107,7 +123,7 @@ function Navbar() {
           <>
             {!isAdmin && (
               <>
-              <Button variant="text" onClick={() => navigate("/bookings")}>
+                <Button variant="text" onClick={() => navigate("/bookings")}>
                   My Bookings
                 </Button>
                 <IconButton
@@ -117,7 +133,13 @@ function Navbar() {
                 >
                   <DirectionsBoatFilledIcon />
                 </IconButton>
-                
+                <IconButton
+                  aria-label="booking"
+                  size="large"
+                  onClick={handleOpenUserviewModal}
+                >
+                  <NotificationsIcon />
+                </IconButton>
               </>
             )}
             <Typography>Hi {user?.name}</Typography>
@@ -160,6 +182,10 @@ function Navbar() {
       <CreateBookingModal
         isOpen={isCreateBookingModalOpen}
         onClose={handleCloseBookingModal}
+      />
+      <UserNotificationModal
+        isOpen={isUserNotificationModalOpen}
+        onClose={handleCloseUserviewModal}
       />
       <ProfileModel
         isOpen={isProfileModelOpen}

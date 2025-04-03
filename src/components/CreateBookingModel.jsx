@@ -44,6 +44,7 @@ export const CreateBookingModal = ({ isOpen, onClose }) => {
     queryKey: ["services"],
     queryFn: async () => {
       const res = await api.get("/services");
+      console.log("🚀 ~ queryFn: ~ services:", services)
       return res.data.services;
     },
     onError: (error) => {
